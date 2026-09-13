@@ -1,0 +1,106 @@
+{
+  "deck": {
+    "name": "Hunny Tribal",
+    "inks": "Amethyst / Sapphire",
+    "cards": [
+      { "qty": 4, "name": "Boo - Human Child", "type": "Character" },
+      { "qty": 4, "name": "Christopher Robin - Hunny Sage", "type": "Character" },
+      { "qty": 4, "name": "Eeyore - Hunny Scholar", "type": "Character" },
+      { "qty": 4, "name": "Piglet - Hunny Mage Apprentice", "type": "Character" },
+      { "qty": 4, "name": "Pocahontas - Following the Wind", "type": "Character" },
+      { "qty": 4, "name": "Winnie the Pooh & Piglet - Hunny Mages", "type": "Character" },
+      { "qty": 4, "name": "Winnie the Pooh - Hunny Archmage", "type": "Character" },
+      { "qty": 4, "name": "Will o' the Wisp - Forest Spirit", "type": "Character" },
+      { "qty": 2, "name": "Lumpy - Hunny Druid", "type": "Character" },
+      { "qty": 2, "name": "Peter Pan - Playful Prankster", "type": "Character" },
+      { "qty": 2, "name": "Vixey - Expert Fisher", "type": "Character" },
+      { "qty": 2, "name": "Winnie the Pooh - Hunny Wizard", "type": "Character" },
+      { "qty": 2, "name": "Morph - Little Imitator", "type": "Character" },
+      { "qty": 2, "name": "Anna - Little Sister", "type": "Character" },
+      { "qty": 4, "name": "Source of the Vine", "type": "Item" },
+      { "qty": 2, "name": "Translation Collar", "type": "Item" },
+      { "qty": 2, "name": "Magical Hunny Staff", "type": "Item" },
+      { "qty": 2, "name": "Big Book of Hunny", "type": "Item" },
+      { "qty": 2, "name": "What Else Can I Do?", "type": "Action" },
+      { "qty": 2, "name": "With a Few Good Friends", "type": "Action" },
+      { "qty": 2, "name": "Hundred Acre Wood - Hunny Campsite", "type": "Location" }
+    ]
+  },
+
+  "issues": [
+    "Source of the Vine แทบไร้ผล — คู่แข่งเลือก \"Pay 1 ink\" เกือบทุกครั้ง รวมกันเกิน 10 ครั้งจาก 2 เกม ได้ลอร์กลับมาแค่ 3 ครั้ง",
+    "ไม่มี removal ในเด็ค ต้องพึ่ง combat อย่างเดียว ทำให้ตัว value ของคู่แข่งอยู่รอดและฟาร์มต่อเนื่อง",
+    "Ward จาก Eeyore ป้องกันได้แค่ 1 ตัวต่อเทิร์น ไม่พอกันตอนคู่แข่งโจมตีพร้อมกันหลายตัว",
+    "Christopher Robin (payoff 6-cost) มาถึงมือช้าเกินไปทั้ง 2 เกม (เทิร์น 16 ทั้งคู่)"
+  ],
+
+  "verdicts": [
+    { "card": "Eeyore - Hunny Scholar", "note": "Hunny Tactics ให้ Ward + lore ทุกครั้งที่เควส เป็นแกนหลักที่ทำงานได้จริงทั้ง 2 เกม", "status": "keep", "label": "เก็บไว้" },
+    { "card": "Source of the Vine", "note": "Siphon โดนเลือก \"Pay 1 ink\" เกือบทุกครั้ง แทบไม่เคยได้ lore", "status": "cut", "label": "พิจารณาตัด" },
+    { "card": "Christopher Robin - Hunny Sage", "note": "ตัว payoff ที่ดีเมื่อมาถึง แต่มาถึงมือช้าเกินไปทั้ง 2 เกม", "status": "watch", "label": "ต้องหาทางเร่ง" },
+    { "card": "Winnie the Pooh - Hunny Archmage", "note": "เควสได้ lore ก้อนใหญ่เมื่อมี Hunny เพื่อนในสนาม แต่ willpower ต่ำ โดน challenge ตายง่าย", "status": "watch", "label": "ต้องมีการป้องกันเสริม" },
+    { "card": "Hundred Acre Wood - Hunny Campsite", "note": "ให้ +1 lore ทุกเทิร์นถ้ายังอยู่ แต่โดนโฟกัสยิงจนตายไวทั้งสองครั้งที่ลง", "status": "watch", "label": "เปราะบาง" }
+  ],
+
+  "games": [
+    {
+      "date": "2026-09-13",
+      "opponent": "Amber \"Smooth the Way\" Ramp",
+      "oppDetail": "Grandmother Willow, Elinor - Renowned Diplomat, White Rabbit, Mickey Mouse, Rapunzel — เด็คเน้นลด cost ตัวละครแล้วปั๊ม lore ต่อเนื่อง",
+      "result": "แพ้",
+      "myLore": 16,
+      "oppLore": 20,
+      "mulligan": "มัลลิแกน 3 ใบ (ทิ้ง What Else Can I Do?, Translation Collar, Lumpy)",
+      "timeline": [
+        { "turn": "T2", "side": "me", "text": "อิงค์ Magical Hunny Staff, ลง Piglet - Hunny Mage Apprentice" },
+        { "turn": "T3", "side": "opp", "text": "ลง Grandmother Willow (Smooth the Way — ลด cost ตัวถัดไป 1) เริ่ม engine ramp" },
+        { "turn": "T4", "side": "me", "text": "ลง Winnie the Pooh - Hunny Archmage, เควส Piglet (+1 → 1)" },
+        { "turn": "T5", "side": "opp", "text": "ลง Elinor - Renowned Diplomat (cost ลดจาก Smooth the Way) เควส Grandmother Willow (+1)" },
+        { "turn": "T6", "side": "me", "text": "ลง Eeyore - Hunny Scholar, ชาเลนจ์ฆ่า Grandmother Willow ด้วย Piglet, เควส Pooh Archmage (+3 → 4)" },
+        { "turn": "T7", "side": "opp", "key": true, "text": "Elinor ชาเลนจ์แบนิช Winnie the Pooh - Hunny Archmage ทั้งที่เพิ่งทำ lore ไป 3 แต้ม" },
+        { "turn": "T8", "side": "me", "text": "ลง Will o' the Wisp + Morph, เควส Eeyore(+1) Hunny Tactics ให้ Ward+lore กับ Piglet, เควส Piglet (+2 → 7)" },
+        { "turn": "T9", "side": "opp", "key": true, "text": "Julieta Madrigal ฮีล+จั่วการ์ด, Elinor ชาเลนจ์แบนิช Piglet อีกตัว" },
+        { "turn": "T10", "side": "me", "text": "ลง Hundred Acre Wood, ย้าย Eeyore ไปอยู่ที่นั่น, เควส 3 ตัวรวด (+4 → 11) Hunny Tactics ให้ Ward" },
+        { "turn": "T11", "side": "opp", "key": true, "text": "ชาเลนจ์รัวหลายครั้ง: Elinor vs Eeyore (Elinor ตายเอง!), โจมตี Hundred Acre Wood 2 ครั้ง (รอด), ฆ่า Morph ด้วย White Rabbit" },
+        { "turn": "T12", "side": "me", "text": "ลง Eeyore ตัวที่สองที่ Hundred Acre Wood, เควสรวม (+3 → 15) Hunny Tactics ให้ Ward" },
+        { "turn": "T13", "side": "opp", "key": true, "text": "ฆ่า Hundred Acre Wood ด้วย White Rabbit, Rapunzel's Fates' Design เด้ง Eeyore กลับมือ, เควสรัวหลายตัวไป 15" },
+        { "turn": "T14", "side": "me", "text": "ลง Source of the Vine, อิงค์ Piglet" },
+        { "turn": "T15", "side": "opp", "key": true, "text": "เควสรัว 5 ตัวติดต่อกัน (15→20), Siphon โดนเลือก \"Pay 1 ink\" ทุกครั้ง (4 รอบ) ไม่มีผล, Christopher Robin โดน Find a Friend ทิ้งลงล่างเด็ค" },
+        { "turn": "T16", "side": "me", "text": "ลง Christopher Robin (มาช้าไปแล้ว) ค้นเจอ Winnie the Pooh Wizard, เควส Eeyore (+1 → 16)" },
+        { "turn": "T17", "side": "opp", "key": true, "text": "เควสจบเกมที่ 20 lore — คู่แข่งชนะ" }
+      ]
+    },
+    {
+      "date": "2026-09-12",
+      "opponent": "Ruby/Amethyst Incredibles / Lilo & Stitch",
+      "oppDetail": "Violet Parr (Shift + Heroic Synergy loot), Angel (removal เบา), Bambi (recursion), Lilo & Stitch (support บัฟทีม)",
+      "result": "แพ้",
+      "myLore": 15,
+      "oppLore": 20,
+      "mulligan": "มัลลิแกน 4 ใบ",
+      "timeline": [
+        { "turn": "T1", "side": "me", "text": "อิงค์ Translation Collar, ลง Piglet - Hunny Mage Apprentice" },
+        { "turn": "T2", "side": "opp", "text": "ลง Angel - Siren Singer (cost ลดด้วย Underdog)" },
+        { "turn": "T3", "side": "me", "text": "ลง Peter Pan - Playful Prankster ล็อก Angel ไม่ให้ ready เทิร์นหน้า, เควส Piglet (+1)" },
+        { "turn": "T5", "side": "me", "text": "ลง Pocahontas - Following the Wind + Will o' the Wisp" },
+        { "turn": "T6", "side": "opp", "key": true, "text": "Shift Violet Parr - Super Resilient (loot จาก Heroic Synergy), ร้อง He Hurled His Thunderbolt แบนิช Pocahontas" },
+        { "turn": "T7", "side": "me", "text": "ลง Eeyore, เควส Will o' the Wisp (+1 → 2)" },
+        { "turn": "T8", "side": "opp", "key": true, "text": "ลง Angel - Experiment 624, เควส Violet Parr (+2), Good Aim ยิงแบนิช Piglet" },
+        { "turn": "T9", "side": "me", "text": "ลง Source of the Vine, เควส Will o' the Wisp (+1 → 3)" },
+        { "turn": "T10", "side": "opp", "key": true, "text": "ชาเลนจ์ Will o' the Wisp (Come On Out เด้งกลับมือ), Mowgli บังคับทิ้ง What Else Can I Do? จากมือคุณ, เควส Violet Parr (+2 → 4)" },
+        { "turn": "T11", "side": "me", "text": "ลง Will o' the Wisp (รอบสอง) + Winnie the Pooh - Hunny Archmage" },
+        { "turn": "T12", "side": "opp", "text": "เควส Violet Parr (+2 → 6) และ Mowgli (+1 → 7), Siphon pay 1 ink ไม่มีผลอีก 2 ครั้ง" },
+        { "turn": "T13", "side": "me", "key": true, "text": "คอมโบใหญ่: Eeyore's Hunny Tactics บัฟ Pooh Archmage, เควสรวม 3 ตัวได้ +6 lore (5 → 9) — จุดพีคของเกม" },
+        { "turn": "T14", "side": "opp", "key": true, "text": "กวาดบอร์ดทั้งเทิร์น: แบนิช Pooh Archmage, Eeyore, Will o'Wisp 2 ครั้ง, เล่น Ohana Means Family ฮีล+จั่ว 2" },
+        { "turn": "T15", "side": "me", "text": "ลง Winnie the Pooh & Piglet - Hunny Mages (shift), ชาเลนจ์ฆ่า Mowgli ด้วย Eeyore" },
+        { "turn": "T16", "side": "opp", "key": true, "text": "ลง Bambi, Good Aim ยิง Pooh&Piglet, แบนิช Eeyore ด้วย Violet Parr, เควส Angel-624 (+1 → 8), Siphon ครั้งนี้คุณได้ lore (+1 → 10)" },
+        { "turn": "T17", "side": "me", "text": "ลง Source of the Vine ใบที่สอง, เควส Pooh & Piglet (+2 → 12)" },
+        { "turn": "T18", "side": "opp", "key": true, "text": "Bambi แบนิช Winnie the Pooh & Piglet, เล่น Lilo & Stitch, ร้อง Thunderbolt แบนิช Peter Pan" },
+        { "turn": "T19", "side": "me", "text": "ลง Piglet ใหม่, Radiant Bloom x2 บน Source of the Vine (+2 → 14)" },
+        { "turn": "T20", "side": "opp", "text": "เควส Lilo & Stitch (+3 → 11, Support บัฟ Bambi), เควส Violet Parr (+2 → 14)" },
+        { "turn": "T21", "side": "me", "text": "ลง Anna - Little Sister (เด้ง Lilo & Stitch ลงเด็ค), ชาเลนจ์แลกตายกับ Bambi ด้วย Piglet, Radiant Bloom (+1 → 15)" },
+        { "turn": "T22", "side": "opp", "key": true, "text": "เล่น Lilo & Stitch ใหม่ เควส (+3 → 18), เควส Violet Parr (+2 → 20) — คู่แข่งชนะ" }
+      ]
+    }
+  ]
+}

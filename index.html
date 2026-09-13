@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunny Deck — แดชบอร์ด &amp; คลังการ์ด</title>
+<style>
+  :root{
+    --ink-purple:#a683e0; --ink-purple-deep:#c9a8f5;
+    --ink-blue:#5fb3e0;
+    --paper:#18151f; --panel:#211d2c; --panel-2:#241f33;
+    --line:#35304a; --text:#eae6f2; --soft:#a79fc0;
+    --green:#6fcf87; --yellow:#e3c05a; --red:#e88a72;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper); color:var(--text);
+    font-family:"Noto Serif Thai","Sarabun",serif; line-height:1.7;
+    -webkit-font-smoothing:antialiased;}
+  .band{height:8px;background:linear-gradient(90deg,var(--ink-purple) 0%,var(--ink-purple) 49.5%,var(--ink-blue) 50.5%,var(--ink-blue) 100%);}
+
+  nav{position:sticky; top:0; z-index:10; background:rgba(24,21,31,.96);
+    backdrop-filter:blur(6px); border-bottom:1px solid var(--line);
+    display:flex; gap:4px; padding:0 24px; max-width:900px; margin:0 auto; overflow-x:auto;}
+  nav button{font-family:"Sarabun",sans-serif; background:none; border:none;
+    color:var(--soft); padding:16px 14px; font-size:.95rem; cursor:pointer;
+    border-bottom:2px solid transparent; white-space:nowrap; transition:color .15s,border-color .15s;}
+  nav button:hover{color:var(--text);}
+  nav button.active{color:var(--ink-purple-deep); border-bottom-color:var(--ink-purple);}
+
+  main{max-width:900px; margin:0 auto; padding:36px 24px 90px;}
+  .page{display:none;} .page.active{display:block;}
+  h1{font-size:1.75rem; color:var(--ink-purple-deep); margin:0 0 6px;}
+  .lead{font-family:"Sarabun",sans-serif; color:var(--soft); margin:0 0 32px; max-width:62ch;}
+  h2{font-size:1.2rem; color:var(--ink-purple-deep); margin:0 0 14px;}
+
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:36px;}
+  .stat{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:16px 14px; text-align:center;}
+  .stat .num{font-size:1.7rem; font-weight:700; color:var(--ink-blue);}
+  .stat .lbl{font-family:"Sarabun",sans-serif; font-size:.82rem; color:var(--soft); margin-top:4px;}
+
+  .deck-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:36px;}
+  .deck-cat{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:16px 18px;}
+  .deck-cat h3{font-family:"Sarabun",sans-serif; font-size:.95rem; color:var(--ink-blue);
+    margin:0 0 10px; display:flex; justify-content:space-between;}
+  .deck-cat ul{margin:0; padding:0; list-style:none;}
+  .deck-cat li{display:flex; justify-content:space-between; font-size:.92rem;
+    padding:5px 0; border-bottom:1px solid var(--line); gap:10px;}
+  .deck-cat li:last-child{border-bottom:none;}
+  .deck-cat li .qty{font-family:"Sarabun",sans-serif; color:var(--ink-purple-deep); font-weight:700;}
+
+  table.verdict{width:100%; border-collapse:collapse; font-size:.92rem; margin-bottom:36px;}
+  table.verdict th{font-family:"Sarabun",sans-serif; text-align:right; color:var(--soft);
+    font-size:.82rem; padding:8px 10px; border-bottom:1px solid var(--line);}
+  table.verdict td{padding:10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  .pill{font-family:"Sarabun",sans-serif; font-size:.78rem; padding:2px 10px;
+    border-radius:20px; white-space:nowrap; display:inline-block;}
+  .pill.cut{background:#3a2222; color:var(--red);}
+  .pill.keep{background:#1f3324; color:var(--green);}
+  .pill.watch{background:#332c17; color:var(--yellow);}
+
+  ul.issues{margin:0 0 12px; padding:0; list-style:none;}
+  ul.issues li{padding:10px 14px; background:var(--panel); border-right:3px solid var(--red);
+    border-radius:2px; margin-bottom:8px; font-size:.94rem;}
+
+  .gamecard{background:var(--panel); border:1px solid var(--line); border-radius:4px;
+    padding:16px 18px; margin-bottom:12px; cursor:pointer;}
+  .gamecard:hover{background:var(--panel-2);}
+  .gamecard .gtop{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .gamecard .opp{font-weight:700;}
+  .gamecard .sc{font-family:"Sarabun",sans-serif; font-weight:700;}
+  .gamecard .sc .w{color:var(--green);} .gamecard .sc .l{color:var(--red);}
+  .gamecard .dt{font-family:"Sarabun",sans-serif; font-size:.82rem; color:var(--soft);}
+
+  .result-banner{display:flex; justify-content:space-between; align-items:center;
+    background:var(--panel-2); border-radius:4px; padding:16px 20px; margin-bottom:30px;
+    font-family:"Sarabun",sans-serif; flex-wrap:wrap; gap:10px;}
+  .result-banner .score{font-size:1.4rem; font-weight:700;}
+  .result-banner .score .you{color:var(--ink-purple-deep);}
+  .result-banner .score .opp{color:var(--red);}
+  .result-banner .vs{color:var(--soft); font-size:.88rem;}
+
+  .timeline{position:relative; padding-right:26px;}
+  .timeline::before{content:""; position:absolute; right:6px; top:4px; bottom:4px; width:2px; background:var(--line);}
+  .t-item{position:relative; margin-bottom:18px; padding-right:20px;}
+  .t-item::before{content:""; position:absolute; right:-3px; top:5px; width:9px; height:9px;
+    border-radius:50%; background:var(--ink-purple);}
+  .t-item.opp::before{background:var(--ink-blue);}
+  .t-item.key::before{background:var(--red); width:11px; height:11px; right:-4px;}
+  .t-head{font-family:"Sarabun",sans-serif; font-size:.8rem; color:var(--soft); margin-bottom:3px;}
+  .t-head .turn{font-weight:700; color:var(--ink-blue);}
+  .t-item.opp .t-head .turn{color:var(--ink-purple-deep);}
+  .t-body{font-size:.96rem;}
+  .t-item.key .t-body{color:#f5c9b8;}
+  .backlink{font-family:"Sarabun",sans-serif; background:none; border:none;
+    color:var(--ink-blue); cursor:pointer; padding:0; font-size:.92rem; margin-bottom:16px;}
+
+  .filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; font-family:"Sarabun",sans-serif;}
+  .filters input,.filters select,.form input,.form select,.form textarea{
+    background:var(--panel); color:var(--text); border:1px solid var(--line);
+    border-radius:4px; padding:9px 11px; font-size:.92rem; font-family:"Sarabun",sans-serif;}
+  .filters input{flex:1; min-width:170px;}
+  .filters input:focus,.filters select:focus,.form input:focus,.form textarea:focus{
+    outline:2px solid var(--ink-purple); outline-offset:1px;}
+  .count{font-family:"Sarabun",sans-serif; font-size:.85rem; color:var(--soft); margin-bottom:12px;}
+  .cardrow{border:1px solid var(--line); background:var(--panel); border-radius:4px; padding:12px 14px; margin-bottom:8px;}
+  .cardrow .top{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px;}
+  .cardrow .nm{font-weight:700; font-size:1rem;}
+  .cardrow .meta{font-family:"Sarabun",sans-serif; font-size:.8rem; color:var(--soft);}
+  .cardrow .txt{font-size:.9rem; margin-top:4px; white-space:pre-wrap;}
+  .ink{font-family:"Sarabun",sans-serif; font-size:.74rem; padding:2px 8px;
+    border-radius:20px; color:#12101a; font-weight:700;}
+  .ink.Amber{background:#e0a63c;} .ink.Amethyst{background:#a683e0;}
+  .ink.Emerald{background:#5fc48a;} .ink.Ruby{background:#e07a72;}
+  .ink.Sapphire{background:#5fb3e0;} .ink.Steel{background:#9aa7bd;}
+  .more{display:block; width:100%; padding:12px; margin-top:10px; background:var(--panel-2);
+    color:var(--ink-purple-deep); border:1px solid var(--line); border-radius:4px;
+    font-family:"Sarabun",sans-serif; font-size:.95rem; cursor:pointer;}
+  .more:hover{background:#2c2640;}
+
+  .form{display:grid; gap:12px; margin-bottom:20px;}
+  .form label{font-family:"Sarabun",sans-serif; font-size:.86rem; color:var(--soft); display:block; margin-bottom:4px;}
+  .form .two{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .form textarea{width:100%; min-height:110px; resize:vertical; line-height:1.6;}
+  .form input,.form select{width:100%;}
+  .btn{font-family:"Sarabun",sans-serif; background:var(--ink-purple); color:#14111c;
+    border:none; border-radius:4px; padding:12px 18px; font-size:.95rem; font-weight:700; cursor:pointer;}
+  .btn:hover{background:var(--ink-purple-deep);}
+  .btn.ghost{background:var(--panel-2); color:var(--ink-purple-deep); border:1px solid var(--line); font-weight:400;}
+  pre{background:#12101a; border:1px solid var(--line); border-radius:4px;
+    padding:14px; overflow-x:auto; font-size:.82rem; color:#cfc7e0; white-space:pre-wrap; word-break:break-word;}
+  .host{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:16px 18px; margin-bottom:12px;}
+  .host h3{font-family:"Sarabun",sans-serif; font-size:1.02rem; color:var(--ink-blue); margin:0 0 6px;}
+  .host .good{color:var(--green); font-size:.9rem;} .host .bad{color:var(--red); font-size:.9rem;}
+  code{background:#2c2640; padding:2px 6px; border-radius:3px; font-size:.88rem;}
+  .err{background:#3a2222; border-right:3px solid var(--red); padding:12px 14px; border-radius:3px;}
+
+  @media (max-width:640px){
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+    .deck-grid,.form .two{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="band"></div>
+<nav>
+  <button class="active" data-page="dashboard">แดชบอร์ด</button>
+  <button data-page="games">ประวัติเกม</button>
+  <button data-page="add">บันทึกเกมใหม่</button>
+  <button data-page="cards">คลังการ์ด</button>
+</nav>
+
+<main>
+  <section class="page active" id="dashboard">
+    <h1>Hunny Deck — แดชบอร์ด</h1>
+    <p class="lead" id="deckLead">กำลังโหลด…</p>
+    <div class="stat-row" id="stats"></div>
+    <h2>โครงเด็ค</h2>
+    <div class="deck-grid" id="deckGrid"></div>
+    <h2>ปัญหาที่เจอซ้ำ</h2>
+    <ul class="issues" id="issues"></ul>
+    <h2>การ์ด MVP / ตัวที่ควรพิจารณาตัด</h2>
+    <table class="verdict"><tbody id="verdicts"></tbody></table>
+  </section>
+
+  <section class="page" id="games">
+    <h1>ประวัติเกม</h1>
+    <p class="lead">แตะที่การ์ดแต่ละใบเพื่อดูไทม์ไลน์เต็ม</p>
+    <div id="gameList"></div>
+  </section>
+
+  <section class="page" id="gameDetail">
+    <button class="backlink" onclick="showPage('games')">← กลับไปรายการเกม</button>
+    <div id="detailBody"></div>
+  </section>
+
+  <section class="page" id="add">
+    <h1>บันทึกเกมใหม่</h1>
+    <p class="lead">กรอกผลเกม แล้วกดสร้าง JSON — คัดลอกไปวางใน <code>games.json</code> บน GitHub ได้เลย ไม่ต้องพิมพ์ syntax เอง</p>
+    <div class="form">
+      <div class="two">
+        <div><label for="f-date">วันที่</label><input type="date" id="f-date"></div>
+        <div><label for="f-result">ผล</label>
+          <select id="f-result"><option>แพ้</option><option>ชนะ</option></select></div>
+      </div>
+      <div><label for="f-opp">เด็คคู่ต่อสู้</label>
+        <input type="text" id="f-opp" placeholder="เช่น Ruby/Amber Aggro"></div>
+      <div><label for="f-oppdetail">รายละเอียดคู่ต่อสู้ (ไม่บังคับ)</label>
+        <input type="text" id="f-oppdetail" placeholder="การ์ดหลักที่เจอ / แนวทางเล่นของเขา"></div>
+      <div class="two">
+        <div><label for="f-my">ลอร์ของคุณ</label><input type="number" id="f-my" min="0" max="20" value="0"></div>
+        <div><label for="f-opp-lore">ลอร์คู่ต่อสู้</label><input type="number" id="f-opp-lore" min="0" max="20" value="0"></div>
+      </div>
+      <div><label for="f-mull">มัลลิแกน (ไม่บังคับ)</label>
+        <input type="text" id="f-mull" placeholder="เช่น มัลลิแกน 3 ใบ (ทิ้ง ...)"></div>
+      <div><label for="f-deck">เด็คที่ใช้ — วางเด็คลิสต์ที่นี่ (เว้นว่างไว้ = ใช้เด็คเดิมจากเกมก่อนหน้า)</label>
+        <textarea id="f-deck" placeholder="4 Piglet - Hunny Mage Apprentice
+4 Eeyore - Hunny Scholar
+2 Hundred Acre Wood - Hunny Campsite"></textarea></div>
+      <div><label for="f-tl">ไทม์ไลน์ — บรรทัดละ 1 เทิร์น รูปแบบ <code>T7 | opp | ข้อความ</code> (ใส่ <code>!</code> ต่อท้าย opp/me เพื่อทำเป็นเทิร์นสำคัญ)</label>
+        <textarea id="f-tl" placeholder="T2 | me | ลง Piglet
+T3 | opp | ลง Elinor
+T7 | opp! | แบนิช Pooh Archmage"></textarea></div>
+      <div>
+        <button class="btn" id="genBtn">สร้าง JSON</button>
+        <button class="btn ghost" id="copyBtn" style="display:none">คัดลอก</button>
+      </div>
+    </div>
+    <div id="outWrap" style="display:none">
+      <p class="lead" style="margin-bottom:8px;">วางบล็อกนี้เป็นรายการแรกใน <code>"games": [ ... ]</code> ของไฟล์ <code>games.json</code> (อย่าลืมใส่ลูกน้ำคั่นกับเกมถัดไป)</p>
+      <pre id="out"></pre>
+    </div>
+  </section>
+
+  <section class="page" id="cards">
+    <h1>คลังการ์ด เซท 9–13</h1>
+    <p class="lead">Fabled · Whispers in the Well · Winterspell · Wilds Unknown · Attack of the Vine!</p>
+    <div class="filters">
+      <input type="text" id="q" placeholder="ค้นหาชื่อหรือความสามารถ เช่น Hunny, Ward, banish">
+      <select id="fset"><option value="">ทุกเซท</option>
+        <option value="9">9 · Fabled</option><option value="10">10 · Whispers in the Well</option>
+        <option value="11">11 · Winterspell</option><option value="12">12 · Wilds Unknown</option>
+        <option value="13">13 · Attack of the Vine!</option></select>
+      <select id="fink"><option value="">ทุกสี</option>
+        <option>Amber</option><option>Amethyst</option><option>Emerald</option>
+        <option>Ruby</option><option>Sapphire</option><option>Steel</option></select>
+      <select id="ftype"><option value="">ทุกประเภท</option>
+        <option>Character</option><option>Item</option><option>Action</option>
+        <option>Song</option><option>Location</option></select>
+    </div>
+    <div class="count" id="count"></div>
+    <div id="results"></div>
+    <button class="more" id="more" style="display:none">แสดงเพิ่ม</button>
+  </section>
+
+</main>
+
+<script>
+let DATA=null, CARDS=[];
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>
+    b.classList.toggle('active', b.dataset.page===id));
+  window.scrollTo({top:0});
+}
+document.querySelectorAll('nav button').forEach(b=>
+  b.addEventListener('click',()=>showPage(b.dataset.page)));
+
+const esc=s=>String(s==null?'':s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+
+/* ---------- games.json ---------- */
+fetch('games.json').then(r=>{
+  if(!r.ok) throw new Error('โหลด games.json ไม่ได้ (HTTP '+r.status+')');
+  return r.json();
+}).then(d=>{DATA=d; renderAll();})
+.catch(e=>{
+  document.getElementById('deckLead').innerHTML =
+    '<div class="err">โหลด games.json ไม่สำเร็จ: '+esc(e.message)+
+    '<br>ถ้าเปิดไฟล์จากเครื่องโดยตรง เบราว์เซอร์อาจบล็อกการอ่านไฟล์ — ลองอัปขึ้น GitHub Pages แล้วเปิดผ่านลิงก์แทน</div>';
+});
+
+function renderAll(){
+  const g=DATA.games, wins=g.filter(x=>x.result==='ชนะ').length;
+  document.getElementById('deckLead').textContent =
+    `เด็ค ${DATA.deck.name} — ${DATA.deck.inks} · บันทึกไว้ ${g.length} เกม`;
+
+  const total=DATA.deck.cards.reduce((a,c)=>a+c.qty,0);
+  const avg=g.length? (g.reduce((a,x)=>a+x.myLore,0)/g.length).toFixed(1):'—';
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="num">${wins}–${g.length-wins}</div><div class="lbl">ชนะ–แพ้</div></div>
+    <div class="stat"><div class="num">${total}</div><div class="lbl">การ์ดในเด็ค</div></div>
+    <div class="stat"><div class="num">${avg}</div><div class="lbl">ลอร์เฉลี่ยของคุณ</div></div>
+    <div class="stat"><div class="num">${g.length}</div><div class="lbl">เกมที่บันทึก</div></div>`;
+
+  const byType={};
+  DATA.deck.cards.forEach(c=>{(byType[c.type]=byType[c.type]||[]).push(c);});
+  const thai={Character:'ตัวละคร',Item:'ไอเทม',Action:'แอ็คชั่น',Location:'สถานที่'};
+  document.getElementById('deckGrid').innerHTML=Object.entries(byType).map(([t,list])=>{
+    const n=list.reduce((a,c)=>a+c.qty,0);
+    list.sort((a,b)=>b.qty-a.qty);
+    return `<div class="deck-cat"><h3><span>${thai[t]||t}</span><span>${n} ใบ</span></h3><ul>`+
+      list.map(c=>`<li><span>${esc(c.name)}</span><span class="qty">${c.qty}</span></li>`).join('')+
+      `</ul></div>`;}).join('');
+
+  document.getElementById('issues').innerHTML=
+    DATA.issues.map(i=>`<li>${esc(i)}</li>`).join('');
+
+  document.getElementById('verdicts').innerHTML=
+    '<tr><th>การ์ด</th><th>บทบาทที่เห็น</th><th>ข้อสรุป</th></tr>'+
+    DATA.verdicts.map(v=>`<tr><td>${esc(v.card)}</td><td>${esc(v.note)}</td>
+      <td><span class="pill ${v.status}">${esc(v.label)}</span></td></tr>`).join('');
+
+  document.getElementById('gameList').innerHTML=g.map((x,i)=>{
+    const win=x.result==='ชนะ';
+    return `<div class="gamecard" onclick="openGame(${i})">
+      <div class="gtop"><span class="opp">${esc(x.opponent)}</span>
+      <span class="sc"><span class="${win?'w':'l'}">${x.myLore}</span> — ${x.oppLore}</span></div>
+      <div class="dt">${esc(x.date)} · ${esc(x.result)}${x.timeline?' · '+x.timeline.length+' เทิร์นที่บันทึก':''}</div>
+    </div>`;}).join('');
+}
+
+function deckForGame(i){
+  // games เรียงใหม่ไปเก่า — เด็คที่ใช้คือของเกมนั้น ถ้าไม่ระบุให้สืบจากเกมที่เก่ากว่าถัดไป
+  for(let j=i; j<DATA.games.length; j++){
+    if(DATA.games[j].deck) return {deck:DATA.games[j].deck, from:j};
+  }
+  return {deck:DATA.deck.cards, from:null};
+}
+function deckTable(list){
+  const byType={}, thai={Character:'ตัวละคร',Item:'ไอเทม',Action:'แอ็คชั่น',Location:'สถานที่','':'การ์ด'};
+  list.forEach(c=>{const t=c.type||''; (byType[t]=byType[t]||[]).push(c);});
+  return Object.entries(byType).map(([t,l])=>{
+    const n=l.reduce((a,c)=>a+c.qty,0);
+    l.slice().sort((a,b)=>b.qty-a.qty);
+    return `<div class="deck-cat"><h3><span>${thai[t]||t}</span><span>${n} ใบ</span></h3><ul>`+
+      l.map(c=>`<li><span>${esc(c.name)}</span><span class="qty">${c.qty}</span></li>`).join('')+
+      '</ul></div>';}).join('');
+}
+function openGame(i){
+  const x=DATA.games[i], win=x.result==='ชนะ';
+  const dk=deckForGame(i);
+  const total=dk.deck.reduce((a,c)=>a+c.qty,0);
+  const src = x.deck ? 'เด็คที่บันทึกไว้กับเกมนี้'
+            : (dk.from!==null ? `ใช้เด็คเดิมจากเกม ${esc(DATA.games[dk.from].date)}`
+                              : 'ใช้เด็คหลักที่ตั้งไว้');
+  document.getElementById('detailBody').innerHTML=`
+    <h1>${esc(x.opponent)}</h1>
+    <p class="lead">${esc(x.oppDetail||'')}</p>
+    <div class="result-banner">
+      <div><span class="vs">${esc(x.date)}${x.mulligan?' · '+esc(x.mulligan):''}</span></div>
+      <div class="score"><span class="you">คุณ ${x.myLore}</span> — <span class="opp">คู่แข่ง ${x.oppLore}</span></div>
+    </div>
+    <div class="timeline">`+
+    (x.timeline||[]).map(t=>`<div class="t-item ${t.side==='opp'?'opp':''} ${t.key?'key':''}">
+      <div class="t-head"><span class="turn">${esc(t.turn)}</span> ${t.side==='opp'?'คู่แข่ง':'คุณ'}</div>
+      <div class="t-body">${esc(t.text)}</div></div>`).join('')+`</div>
+    <h2 style="margin-top:34px;">เด็คที่ใช้ <span style="font-family:'Sarabun',sans-serif;font-weight:400;font-size:.85rem;color:var(--soft);">${total} ใบ · ${src}</span></h2>
+    <div class="deck-grid">${deckTable(dk.deck)}</div>`;
+  showPage('gameDetail');
+}
+
+/* ---------- cards.json ---------- */
+const q=document.getElementById('q'), fset=document.getElementById('fset'),
+      fink=document.getElementById('fink'), ftype=document.getElementById('ftype'),
+      res=document.getElementById('results'), cnt=document.getElementById('count'),
+      moreBtn=document.getElementById('more');
+let shown=0, filtered=[]; const PAGE=40;
+
+fetch('cards.json').then(r=>r.json()).then(d=>{CARDS=d; apply();})
+ .catch(e=>{cnt.innerHTML='<div class="err">โหลด cards.json ไม่ได้ — เปิดผ่าน GitHub Pages หรือ local server แทนการเปิดไฟล์ตรงๆ</div>';});
+
+function render(reset){
+  if(reset){shown=0; res.innerHTML='';}
+  const frag=document.createDocumentFragment();
+  filtered.slice(shown,shown+PAGE).forEach(c=>{
+    const d=document.createElement('div'); d.className='cardrow';
+    const stat=c[6].includes('Character')?`${c[8]}/${c[9]} · ${c[10]} lore`:c[6];
+    d.innerHTML=`<div class="top"><span class="nm">${esc(c[2])}${c[3]?' - '+esc(c[3]):''}</span>
+      <span class="ink ${c[4]}">${c[4]}</span>
+      <span class="meta">${c[5]} ink · ${stat} · ${esc(c[11])} · Set ${c[0]} #${esc(c[1])}</span></div>
+      ${c[7]?`<div class="meta">${esc(c[7])}</div>`:''}
+      ${c[12]?`<div class="txt">${esc(c[12])}</div>`:''}`;
+    frag.appendChild(d);});
+  res.appendChild(frag);
+  shown+=Math.min(PAGE, filtered.length-shown);
+  moreBtn.style.display = shown<filtered.length?'block':'none';
+  moreBtn.textContent=`แสดงเพิ่ม (เหลืออีก ${filtered.length-shown} ใบ)`;
+}
+function apply(){
+  const term=q.value.trim().toLowerCase(), s=fset.value, i=fink.value, t=ftype.value;
+  filtered=CARDS.filter(c=>{
+    if(s&&c[0]!==s) return false;
+    if(i&&c[4]!==i) return false;
+    if(t&&!c[6].includes(t)) return false;
+    if(term && !((c[2]+' '+c[3]+' '+c[12]+' '+c[7]).toLowerCase().includes(term))) return false;
+    return true;});
+  cnt.textContent=`พบ ${filtered.length} ใบ`;
+  render(true);
+}
+[q,fset,fink,ftype].forEach(el=>el.addEventListener('input',apply));
+moreBtn.addEventListener('click',()=>render(false));
+
+/* ---------- form ---------- */
+document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('genBtn').addEventListener('click',()=>{
+  const tl=document.getElementById('f-tl').value.split('\n')
+    .map(l=>l.trim()).filter(Boolean).map(l=>{
+      const p=l.split('|').map(s=>s.trim());
+      if(p.length<3) return null;
+      const key=p[1].endsWith('!');
+      const side=p[1].replace('!','').toLowerCase()==='opp'?'opp':'me';
+      const o={turn:p[0], side:side};
+      if(key) o.key=true;
+      o.text=p.slice(2).join(' | ');
+      return o;
+    }).filter(Boolean);
+  const obj={
+    date:document.getElementById('f-date').value,
+    opponent:document.getElementById('f-opp').value||'(ไม่ระบุ)',
+    result:document.getElementById('f-result').value,
+    myLore:+document.getElementById('f-my').value,
+    oppLore:+document.getElementById('f-opp-lore').value
+  };
+  const rawDeck=document.getElementById('f-deck').value.trim();
+  if(rawDeck){
+    const deck=rawDeck.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
+      const m=l.match(/^(\d+)\s*[xX]?\s+(.+)$/);
+      return m? {qty:+m[1], name:m[2].trim()} : {qty:1, name:l};
+    });
+    if(deck.length) obj.deck=deck;
+  }
+  const od=document.getElementById('f-oppdetail').value; if(od) obj.oppDetail=od;
+  const mu=document.getElementById('f-mull').value; if(mu) obj.mulligan=mu;
+  if(tl.length) obj.timeline=tl;
+  document.getElementById('out').textContent=JSON.stringify(obj,null,2)+',';
+  document.getElementById('outWrap').style.display='block';
+  document.getElementById('copyBtn').style.display='inline-block';
+});
+document.getElementById('copyBtn').addEventListener('click',async()=>{
+  const b=document.getElementById('copyBtn');
+  try{ await navigator.clipboard.writeText(document.getElementById('out').textContent);
+    b.textContent='คัดลอกแล้ว'; setTimeout(()=>b.textContent='คัดลอก',1600);
+  }catch(e){ b.textContent='คัดลอกไม่ได้ — เลือกข้อความเอง'; }
+});
+</script>
+</body>
+</html>
