@@ -111,7 +111,15 @@
             "type": "Location"
           }
         ],
-        "version": "v1 ต้นฉบับ"
+        "version": "v1 ต้นฉบับ",
+        "analysis": {
+          "summary": "",
+          "keyMoments": [],
+          "mistakes": [],
+          "suggestions": [],
+          "verdict": "",
+          "date": "2026-09-13"
+        }
       },
       "issues": [
         "Source of the Vine แทบไร้ผล — คู่แข่งเลือก \"Pay 1 ink\" เกือบทุกครั้ง รวมกันเกิน 10 ครั้งจาก 2 เกม ได้ลอร์กลับมาแค่ 3 ครั้ง",
@@ -503,7 +511,15 @@
               "type": "Location"
             }
           ],
-          "date": "2026-09-12"
+          "date": "2026-09-12",
+          "analysis": {
+            "summary": "",
+            "keyMoments": [],
+            "mistakes": [],
+            "suggestions": [],
+            "verdict": "",
+            "date": "2026-09-13"
+          }
         }
       ]
     },
