@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hunny Deck — แดชบอร์ด &amp; คลังการ์ด</title>
+<title>Lorcana — เด็ค &amp; ประวัติแข่ง</title>
 <style>
   :root{
     --bg:#0e1114; --panel:#161a1f; --panel-2:#1c2127;
@@ -19,23 +19,31 @@
   body{background:var(--bg); color:var(--text);
     font-family:"Noto Serif Thai","Sarabun",serif; line-height:1.7; -webkit-font-smoothing:antialiased;}
   .band{height:3px;background:linear-gradient(90deg,var(--brass),var(--teal));}
+
+  .userbar{max-width:960px; margin:0 auto; padding:12px 20px 0; display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .userbar .ul{font-family:"Sarabun",sans-serif; font-size:.8rem; color:var(--soft);}
+  .ubtn{font-family:"Sarabun",sans-serif; background:var(--panel); border:1px solid var(--line);
+    color:var(--soft); padding:6px 16px; border-radius:20px; font-size:.9rem; cursor:pointer;}
+  .ubtn:hover{border-color:var(--brass-dim); color:var(--text);}
+  .ubtn.on{background:var(--brass); color:#0e1114; border-color:var(--brass); font-weight:700;}
+
   nav{position:sticky; top:0; z-index:20; background:rgba(14,17,20,.97); backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line); display:flex; gap:2px; padding:0 20px; max-width:960px; margin:0 auto; overflow-x:auto;}
+    border-bottom:1px solid var(--line); display:flex; gap:2px; padding:0 20px; max-width:960px; margin:10px auto 0; overflow-x:auto;}
   nav button{font-family:"Sarabun",sans-serif; background:none; border:none; color:var(--soft);
-    padding:15px 13px; font-size:.94rem; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap;}
+    padding:14px 13px; font-size:.94rem; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap;}
   nav button:hover{color:var(--text);}
   nav button.active{color:var(--brass); border-bottom-color:var(--brass);}
-  main{max-width:960px; margin:0 auto; padding:34px 20px 90px;}
+  main{max-width:960px; margin:0 auto; padding:30px 20px 90px;}
   .page{display:none;} .page.active{display:block;}
   h1{font-size:1.7rem; margin:0 0 6px; font-weight:700;}
   h2{font-size:1.15rem; color:var(--brass); margin:32px 0 12px; font-weight:700;}
+  h3{font-size:1rem; margin:20px 0 8px; color:var(--teal); font-family:"Sarabun",sans-serif;}
   .lead{font-family:"Sarabun",sans-serif; color:var(--soft); margin:0 0 26px; max-width:64ch; font-size:.96rem;}
   .sublead{font-family:"Sarabun",sans-serif; color:var(--soft); font-size:.87rem; margin:-4px 0 14px;}
 
   .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px;}
   .stat{background:var(--panel); border:1px solid var(--line); border-radius:3px; padding:15px 12px; text-align:center;}
   .stat .num{font-size:1.55rem; font-weight:700; color:var(--brass);}
-  .stat .num.sm{font-size:1.2rem;}
   .stat .lbl{font-family:"Sarabun",sans-serif; font-size:.79rem; color:var(--soft); margin-top:2px;}
 
   table.t{width:100%; border-collapse:collapse; font-size:.9rem; margin-bottom:6px;}
@@ -77,16 +85,16 @@
   .gamecard .opp{font-weight:700;}
   .gamecard .sc{font-family:"Sarabun",sans-serif; font-weight:700;}
   .gamecard .dt{font-family:"Sarabun",sans-serif; font-size:.8rem; color:var(--soft); margin-top:2px;}
-  .tagv{font-family:"Sarabun",sans-serif; font-size:.73rem; color:var(--teal); border:1px solid var(--line);
-    border-radius:3px; padding:1px 7px;}
+  .tagv{font-family:"Sarabun",sans-serif; font-size:.73rem; color:var(--teal); border:1px solid var(--line); border-radius:3px; padding:1px 7px;}
+  .tagA{font-family:"Sarabun",sans-serif; font-size:.73rem; color:var(--brass); border:1px solid var(--brass-dim); border-radius:3px; padding:1px 7px;}
 
   .result-banner{display:flex; justify-content:space-between; align-items:center; background:var(--panel-2);
-    border-radius:3px; padding:15px 18px; margin-bottom:20px; font-family:"Sarabun",sans-serif; flex-wrap:wrap; gap:10px;}
+    border-radius:3px; padding:15px 18px; margin-bottom:18px; font-family:"Sarabun",sans-serif; flex-wrap:wrap; gap:10px;}
   .result-banner .score{font-size:1.35rem; font-weight:700;}
   .result-banner .score .you{color:var(--brass);} .result-banner .score .opp{color:var(--red);}
   .result-banner .vs{color:var(--soft); font-size:.86rem;}
   .mullbox{background:var(--panel); border:1px solid var(--line); border-right:2px solid var(--teal);
-    border-radius:3px; padding:12px 15px; margin-bottom:22px; font-size:.91rem;}
+    border-radius:3px; padding:12px 15px; margin-bottom:20px; font-size:.91rem;}
   .mullbox .mh{font-family:"Sarabun",sans-serif; font-size:.8rem; color:var(--soft); margin-bottom:3px;}
 
   .timeline{position:relative; padding-right:24px;}
@@ -98,10 +106,23 @@
   .t-head{font-family:"Sarabun",sans-serif; font-size:.79rem; color:var(--soft); margin-bottom:2px;}
   .t-head .turn{font-weight:700; color:var(--brass);}
   .t-item.opp .t-head .turn{color:var(--teal);}
-  .t-body{font-size:.95rem;}
-  .t-item.key .t-body{color:#e8b9a8;}
+  .t-body{font-size:.95rem;} .t-item.key .t-body{color:#e8b9a8;}
   .backlink{font-family:"Sarabun",sans-serif; background:none; border:none; color:var(--teal);
     cursor:pointer; padding:0; font-size:.91rem; margin-bottom:14px;}
+
+  /* บทวิเคราะห์ */
+  .anal{background:var(--panel); border:1px solid var(--line); border-right:3px solid var(--brass);
+    border-radius:3px; padding:16px 18px; margin:14px 0 20px;}
+  .anal .ah{font-family:"Sarabun",sans-serif; font-size:.8rem; color:var(--brass); margin-bottom:8px;
+    display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+  .anal .sum{font-size:.96rem; margin-bottom:4px;}
+  .anal h4{font-family:"Sarabun",sans-serif; font-size:.87rem; margin:14px 0 5px; color:var(--teal);}
+  .anal ul{margin:0; padding:0; list-style:none;}
+  .anal ul li{font-size:.92rem; padding:4px 0 4px 0; padding-right:16px; position:relative;}
+  .anal ul li::before{content:"·"; position:absolute; right:4px; color:var(--brass);}
+  .anal .vd{margin-top:14px; padding-top:11px; border-top:1px solid var(--line-soft);
+    font-size:.93rem; color:var(--amberlore);}
+  .analbar{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0;}
 
   .fbar{margin-bottom:14px;}
   .fbar input[type=text]{width:100%; background:var(--panel); color:var(--text); border:1px solid var(--line);
@@ -143,9 +164,10 @@
   .fieldset{border:1px solid var(--line); border-radius:3px; padding:14px 16px; background:var(--panel);}
   .fieldset .fh{font-family:"Sarabun",sans-serif; font-size:.88rem; color:var(--teal); margin-bottom:11px; font-weight:700;}
   .btn{font-family:"Sarabun",sans-serif; background:var(--brass); color:#0e1114; border:none; border-radius:3px;
-    padding:12px 18px; font-size:.93rem; font-weight:700; cursor:pointer;}
+    padding:11px 17px; font-size:.92rem; font-weight:700; cursor:pointer;}
   .btn:hover{background:#d9bb76;}
   .btn.ghost{background:var(--panel-2); color:var(--brass); border:1px solid var(--line); font-weight:400;}
+  .btn.sm{padding:8px 13px; font-size:.86rem;}
   .btn:disabled{opacity:.45; cursor:not-allowed;}
   pre{background:#0a0c0f; border:1px solid var(--line); border-radius:3px; padding:13px; overflow-x:auto;
     font-size:.81rem; color:#bfc6cf; white-space:pre-wrap; word-break:break-word;}
@@ -161,58 +183,25 @@
   @media (max-width:640px){
     .stat-row{grid-template-columns:repeat(2,1fr);}
     .deck-grid,.form .two,.form .three{grid-template-columns:1fr;}
-    table.t{font-size:.85rem;}
-    table.t th,table.t td{padding:7px 6px;}
+    table.t{font-size:.85rem;} table.t th,table.t td{padding:7px 6px;}
   }
 </style>
 </head>
 <body>
 <div class="band"></div>
+<div class="userbar"><span class="ul">ผู้เล่น</span><div id="userBtns"></div></div>
 <nav>
-  <button class="active" data-page="dashboard">แดชบอร์ด</button>
+  <button class="active" data-page="deck">เด็ค</button>
   <button data-page="games">ประวัติแข่ง</button>
-  <button data-page="deck">เด็ค</button>
   <button data-page="add">บันทึกเกมใหม่</button>
   <button data-page="cards">คลังการ์ด</button>
   <button data-page="sync">ซิงก์</button>
 </nav>
 
 <main>
-  <!-- แดชบอร์ด: สถิติล้วน -->
-  <section class="page active" id="dashboard">
-    <h1>สถิติรวม</h1>
+  <section class="page active" id="deck">
+    <h1 id="deckTitle">เด็ค</h1>
     <p class="lead" id="deckLead">กำลังโหลด…</p>
-    <div id="pendingNote"></div>
-    <h2>ผลการแข่ง</h2>
-    <div class="stat-row" id="statsMain"></div>
-    <h2>จังหวะเกม</h2>
-    <p class="sublead">เด็คนี้ต้องการเวลากี่เทิร์นถึงจะทำงาน และเกมมักจบเมื่อไหร่</p>
-    <div class="stat-row" id="statsTurn"></div>
-    <h2>มัลลิแกน</h2>
-    <p class="sublead">ประเมินย้อนหลังว่าการตัดสินใจมัลลิแกนถูกต้องแค่ไหน</p>
-    <div class="stat-row" id="statsMull"></div>
-  </section>
-
-  <!-- ประวัติแข่ง -->
-  <section class="page" id="games">
-    <h1>ประวัติแข่ง</h1>
-    <p class="lead">สถิติแยกตามคู่ต่อสู้ และรายการเกมทั้งหมด</p>
-    <h2>สถิติแยกตามคู่ต่อสู้</h2>
-    <div id="oppStats"></div>
-    <h2>รายการเกม</h2>
-    <p class="sublead">แตะการ์ดแต่ละใบเพื่อดูไทม์ไลน์เต็ม มัลลิแกน และเด็คที่ใช้</p>
-    <div id="gameList"></div>
-  </section>
-
-  <section class="page" id="gameDetail">
-    <button class="backlink" onclick="showPage('games')">← กลับไปประวัติแข่ง</button>
-    <div id="detailBody"></div>
-  </section>
-
-  <!-- เด็ค -->
-  <section class="page" id="deck">
-    <h1>เด็ค</h1>
-    <p class="lead">เปรียบเทียบผลของแต่ละเวอร์ชัน และดูโครงเด็คปัจจุบัน</p>
     <h2>ผลแยกตามเวอร์ชันเด็ค</h2>
     <p class="sublead">ตั้งชื่อเวอร์ชันตอนบันทึกเกม เพื่อดูว่าปรับแล้วดีขึ้นจริงไหม</p>
     <div id="verStats"></div>
@@ -225,10 +214,51 @@
     <table class="t"><tbody id="verdicts"></tbody></table>
   </section>
 
-  <!-- บันทึกเกมใหม่ -->
+  <section class="page" id="games">
+    <h1>ประวัติแข่ง</h1>
+    <p class="lead" id="gamesLead">กำลังโหลด…</p>
+    <div id="pendingNote"></div>
+    <h2>ผลการแข่ง</h2>
+    <div class="stat-row" id="statsMain"></div>
+    <h2>จังหวะเกม</h2>
+    <p class="sublead">เด็คนี้ต้องการเวลากี่เทิร์นถึงจะทำงาน และเกมมักจบเมื่อไหร่</p>
+    <div class="stat-row" id="statsTurn"></div>
+    <h2>มัลลิแกน</h2>
+    <p class="sublead">ประเมินย้อนหลังว่าการตัดสินใจมัลลิแกนถูกต้องแค่ไหน</p>
+    <div class="stat-row" id="statsMull"></div>
+
+    <h2>บทวิเคราะห์ภาพรวม</h2>
+    <p class="sublead">คัดลอกข้อมูลรวมทุกเกมไปให้ Claude วิเคราะห์ แล้ววางผลกลับมาเก็บไว้ที่นี่</p>
+    <div class="analbar">
+      <button class="btn sm" id="copyOverall">คัดลอกข้อมูลรวมส่งให้ Claude</button>
+      <button class="btn ghost sm" id="toggleOverallPaste">วางบทวิเคราะห์</button>
+    </div>
+    <div id="overallPaste" style="display:none">
+      <div class="form">
+        <div><label for="ov-text">วางผลที่ Claude ตอบกลับมา (รองรับทั้ง JSON และข้อความธรรมดา)</label>
+          <textarea id="ov-text" placeholder='วางทั้งก้อนได้เลย'></textarea></div>
+        <div class="frow"><button class="btn sm" id="saveOverall">บันทึกบทวิเคราะห์</button>
+          <button class="btn ghost sm" id="delOverall">ลบบทวิเคราะห์</button></div>
+      </div>
+      <div id="ovMsg"></div>
+    </div>
+    <div id="overallView"></div>
+
+    <h2>สถิติแยกตามคู่ต่อสู้</h2>
+    <div id="oppStats"></div>
+    <h2>รายการเกม</h2>
+    <p class="sublead">แตะการ์ดแต่ละใบเพื่อดูไทม์ไลน์ มัลลิแกน เด็คที่ใช้ และบทวิเคราะห์</p>
+    <div id="gameList"></div>
+  </section>
+
+  <section class="page" id="gameDetail">
+    <button class="backlink" onclick="showPage('games')">← กลับไปประวัติแข่ง</button>
+    <div id="detailBody"></div>
+  </section>
+
   <section class="page" id="add">
     <h1>บันทึกเกมใหม่</h1>
-    <p class="lead">บันทึกลงเครื่องทันที ใช้ได้แม้ไม่มีเน็ต แล้วค่อยซิงก์ขึ้น GitHub ทีหลัง</p>
+    <p class="lead" id="addLead">บันทึกลงเครื่องทันที ใช้ได้แม้ไม่มีเน็ต แล้วค่อยซิงก์ขึ้น GitHub ทีหลัง</p>
     <div class="form">
       <div class="three">
         <div><label for="f-date">วันที่</label><input type="date" id="f-date"></div>
@@ -244,32 +274,23 @@
         <div><label for="f-my">ลอร์ของคุณ</label><input type="number" id="f-my" min="0" max="20" value="0"></div>
         <div><label for="f-opp-lore">ลอร์คู่ต่อสู้</label><input type="number" id="f-opp-lore" min="0" max="20" value="0"></div>
       </div>
-
-      <div class="fieldset">
-        <div class="fh">มัลลิแกน</div>
+      <div class="fieldset"><div class="fh">มัลลิแกน</div>
         <div class="form" style="gap:11px;margin:0;">
           <div class="two">
             <div><label for="f-mullcount">ทิ้งกี่ใบ</label><input type="number" id="f-mullcount" min="0" max="7" value="0"></div>
             <div><label for="f-mullverdict">ประเมินย้อนหลัง</label>
               <select id="f-mullverdict"><option>ไม่แน่ใจ</option><option>ถูกต้อง</option><option>ผิดพลาด</option></select></div>
           </div>
-          <div><label for="f-mulldisc">การ์ดที่ทิ้ง</label>
-            <input type="text" id="f-mulldisc" placeholder="เช่น What Else Can I Do?, Translation Collar"></div>
-          <div><label for="f-mullnote">บันทึกเพิ่ม (ไม่บังคับ)</label>
-            <input type="text" id="f-mullnote" placeholder="เช่น ทิ้งแล้วไม่มี Ward สำรองตลอดเกม"></div>
-        </div>
-      </div>
-
-      <div class="fieldset">
-        <div class="fh">เด็คที่ใช้</div>
+          <div><label for="f-mulldisc">การ์ดที่ทิ้ง</label><input type="text" id="f-mulldisc" placeholder="เช่น What Else Can I Do?, Translation Collar"></div>
+          <div><label for="f-mullnote">บันทึกเพิ่ม (ไม่บังคับ)</label><input type="text" id="f-mullnote" placeholder="เช่น ทิ้งแล้วไม่มี Ward สำรอง"></div>
+        </div></div>
+      <div class="fieldset"><div class="fh">เด็คที่ใช้</div>
         <div class="form" style="gap:11px;margin:0;">
           <div><label for="f-ver">ชื่อเวอร์ชัน (เว้นว่าง = ใช้เวอร์ชันเดิมจากเกมก่อนหน้า)</label>
             <input type="text" id="f-ver" placeholder="เช่น v2 ตัด Source of the Vine" list="verList"><datalist id="verList"></datalist></div>
           <div><label for="f-deck">เด็คลิสต์ — วางที่นี่ถ้าเปลี่ยนการ์ด (เว้นว่าง = ใช้เด็คเดิม)</label>
             <textarea id="f-deck" placeholder="4 Piglet - Hunny Mage Apprentice&#10;4 Eeyore - Hunny Scholar"></textarea></div>
-        </div>
-      </div>
-
+        </div></div>
       <div><label for="f-tl">ไทม์ไลน์ — บรรทัดละเทิร์น รูปแบบ T7 | opp | ข้อความ (ใส่ ! หลัง opp/me = เทิร์นสำคัญ)</label>
         <textarea id="f-tl" placeholder="T2 | me | ลง Piglet&#10;T7 | opp! | แบนิช Pooh Archmage"></textarea></div>
       <div class="frow">
@@ -281,7 +302,6 @@
     <div id="outWrap" style="display:none"><pre id="out"></pre><button class="btn ghost" id="copyBtn">คัดลอก</button></div>
   </section>
 
-  <!-- คลังการ์ด -->
   <section class="page" id="cards">
     <h1>คลังการ์ด เซท 9–13</h1>
     <p class="lead">Fabled · Whispers in the Well · Winterspell · Wilds Unknown · Attack of the Vine!</p>
@@ -294,12 +314,9 @@
       <div class="frow">
         <label for="sortBy" style="font-family:'Sarabun',sans-serif;font-size:.83rem;color:var(--soft);">เรียงตาม</label>
         <select id="sortBy">
-          <option value="set">เซท / เลขการ์ด</option>
-          <option value="name">ชื่อ A–Z</option>
-          <option value="cost">ค่าอิงค์ น้อย → มาก</option>
-          <option value="cost-d">ค่าอิงค์ มาก → น้อย</option>
-          <option value="lore-d">ลอร์ มาก → น้อย</option>
-          <option value="str-d">พลังโจมตี มาก → น้อย</option>
+          <option value="set">เซท / เลขการ์ด</option><option value="name">ชื่อ A–Z</option>
+          <option value="cost">ค่าอิงค์ น้อย → มาก</option><option value="cost-d">ค่าอิงค์ มาก → น้อย</option>
+          <option value="lore-d">ลอร์ มาก → น้อย</option><option value="str-d">พลังโจมตี มาก → น้อย</option>
           <option value="wil-d">พลังชีวิต มาก → น้อย</option>
         </select>
         <button class="linkbtn" id="clearF">ล้างตัวกรอง</button>
@@ -310,10 +327,9 @@
     <button class="more" id="more" style="display:none">แสดงเพิ่ม</button>
   </section>
 
-  <!-- ซิงก์ -->
   <section class="page" id="sync">
     <h1>ซิงก์ขึ้น GitHub</h1>
-    <p class="lead">เกมที่บันทึกลงเครื่องจะรออยู่ที่นี่ กดปุ่มเดียวเพื่อเขียนลง games.json บน GitHub</p>
+    <p class="lead">เกมและบทวิเคราะห์ที่บันทึกลงเครื่องจะรออยู่ที่นี่</p>
     <div id="syncStatus"></div>
     <div class="box">
       <h3>ตั้งค่าการเชื่อมต่อ</h3>
@@ -333,7 +349,7 @@
     <div class="frow" style="margin:16px 0;">
       <button class="btn" id="pushBtn">ซิงก์ขึ้น GitHub</button>
       <button class="btn ghost" id="exportBtn">ส่งออก games.json ทั้งไฟล์</button>
-      <button class="btn ghost" id="discardBtn">ทิ้งเกมที่รอซิงก์</button>
+      <button class="btn ghost" id="discardBtn">ทิ้งข้อมูลที่รอซิงก์</button>
     </div>
     <div id="pushMsg"></div>
     <div id="exportWrap" style="display:none"><pre id="exportOut"></pre></div>
@@ -369,10 +385,10 @@ function thaiType(s){return (s||'').split('/').map(x=>T_TYPE[x]||x).join(' / ');
 function kwNotes(t){if(!t)return'';const h=KW.filter(k=>k[0].test(t));
   return h.length?h.map(k=>'<b>'+k[1]+'</b> — '+k[2]).join('<br>'):'';}
 
-let DATA=null, CARDS=[], IDX={}, pending=[];
-const LS_PENDING='hunny_pending', LS_CFG='hunny_cfg';
+let DATA=null, CARDS=[], IDX={}, pending={}, analyses={}, USER='Nutt';
+const LS_PENDING='hunny_pending_v2', LS_ANAL='hunny_anal', LS_CFG='hunny_cfg', LS_USER='hunny_user';
 const esc=s=>String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
-const avg=(a,f)=>{const v=a.map(f).filter(x=>typeof x==='number'&&!isNaN(x)); return v.length?(v.reduce((s,x)=>s+x,0)/v.length):null;};
+const avg=(a,f)=>{const v=a.map(f).filter(x=>typeof x==='number'&&!isNaN(x));return v.length?v.reduce((s,x)=>s+x,0)/v.length:null;};
 const fx=(v,d)=>v==null?'—':v.toFixed(d==null?1:d);
 
 function showPage(id){
@@ -382,129 +398,140 @@ function showPage(id){
   window.scrollTo({top:0});
 }
 document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-pending=JSON.parse(localStorage.getItem(LS_PENDING)||'[]');
+
+pending=JSON.parse(localStorage.getItem(LS_PENDING)||'{}');
+analyses=JSON.parse(localStorage.getItem(LS_ANAL)||'{}');
+USER=localStorage.getItem(LS_USER)||'Nutt';
 
 Promise.all([
   fetch('games.json').then(r=>{if(!r.ok)throw new Error('games.json HTTP '+r.status);return r.json();}),
   fetch('cards.json').then(r=>{if(!r.ok)throw new Error('cards.json HTTP '+r.status);return r.json();})
-]).then(function(a){DATA=a[0];CARDS=a[1];buildIndex();buildChips();renderAll();applyCards();renderSync();})
+]).then(function(a){DATA=a[0];CARDS=a[1];
+  if(!DATA.users[USER])USER=Object.keys(DATA.users)[0];
+  buildIndex();buildChips();buildUserBtns();renderAll();applyCards();renderSync();})
 .catch(function(e){document.getElementById('deckLead').innerHTML=
   '<div class="err">โหลดข้อมูลไม่สำเร็จ: '+esc(e.message)+
   '<br>ถ้าเปิดไฟล์จากเครื่องโดยตรง เบราว์เซอร์จะบล็อกการอ่าน JSON — ต้องเปิดผ่าน GitHub Pages หรือ local server</div>';});
 
+function buildUserBtns(){
+  document.getElementById('userBtns').innerHTML=Object.keys(DATA.users).map(u=>
+    '<button class="ubtn'+(u===USER?' on':'')+'" data-u="'+esc(u)+'">'+esc(u)+'</button>').join(' ');
+  document.querySelectorAll('.ubtn').forEach(b=>b.addEventListener('click',function(){
+    USER=this.dataset.u; localStorage.setItem(LS_USER,USER);
+    buildUserBtns(); renderAll(); renderSync(); showPage('deck');}));
+}
 function buildIndex(){CARDS.forEach(function(c,i){
   const f=(c[2]+(c[3]?' - '+c[3]:'')).toLowerCase();
   if(!(f in IDX))IDX[f]=i;
   if(!(c[2].toLowerCase() in IDX))IDX[c[2].toLowerCase()]=i;});}
 function findCard(n){const k=String(n).toLowerCase().trim();
   if(k in IDX)return CARDS[IDX[k]];
-  const b=k.split(' - ')[0]; return (b in IDX)?CARDS[IDX[b]]:null;}
-function allGames(){return pending.concat(DATA.games);}
+  const b=k.split(' - ')[0];return (b in IDX)?CARDS[IDX[b]]:null;}
 
-/* เวอร์ชันเด็คของแต่ละเกม (สืบทอดจากเกมที่เก่ากว่า) */
+const U=()=>DATA.users[USER];
+const pendOf=()=>pending[USER]||[];
+function allGames(){return pendOf().concat(U().games);}
+const gKey=x=>USER+'|'+x.date+'|'+x.opponent;
+const OVKEY=()=>USER+'|__overall__';
+function analOf(x){return analyses[gKey(x)]||x.analysis||null;}
+function overallOf(){return analyses[OVKEY()]||U().overallAnalysis||null;}
+
 function verOf(i){const g=allGames();
   for(let j=i;j<g.length;j++){if(g[j].deckVersion)return g[j].deckVersion;}
-  return DATA.deck.version||'ไม่ระบุเวอร์ชัน';}
+  return U().deck.version||'ไม่ระบุเวอร์ชัน';}
 function deckForGame(i){const g=allGames();
   for(let j=i;j<g.length;j++){if(g[j].deck)return{deck:g[j].deck,from:j};}
-  return{deck:DATA.deck.cards,from:null};}
+  return{deck:U().deck.cards,from:null};}
 
 function renderAll(){
-  const g=allGames(), wins=g.filter(x=>x.result==='ชนะ').length, n=g.length;
-  document.getElementById('deckLead').textContent='เด็ค '+DATA.deck.name+' — '+DATA.deck.inks+' · บันทึกไว้ '+n+' เกม';
-  document.getElementById('pendingNote').innerHTML=pending.length
-    ?'<div class="warn">มี '+pending.length+' เกมที่บันทึกในเครื่องแต่ยังไม่ได้ซิงก์ขึ้น GitHub — ไปที่แท็บซิงก์</div>':'';
+  const g=allGames(), wins=g.filter(x=>x.result==='ชนะ').length, n=g.length, d=U().deck;
+  document.getElementById('deckTitle').textContent='เด็คของ '+USER;
+  document.getElementById('deckLead').textContent=
+    d.name+(d.inks&&d.inks!=='—'?' — '+d.inks:'')+' · เวอร์ชันปัจจุบัน '+(n?verOf(0):(d.version||'—'));
+  document.getElementById('gamesLead').textContent=USER+' · บันทึกไว้ '+n+' เกม';
+  document.getElementById('addLead').textContent='บันทึกเกมของ '+USER+' ลงเครื่องทันที แล้วค่อยซิงก์ขึ้น GitHub ทีหลัง';
+  const pc=pendOf().length;
+  document.getElementById('pendingNote').innerHTML=pc
+    ?'<div class="warn">มี '+pc+' เกมของ '+esc(USER)+' ที่บันทึกในเครื่องแต่ยังไม่ได้ซิงก์</div>':'';
 
   const wr=n?Math.round(wins/n*100):0;
   document.getElementById('statsMain').innerHTML=
     st(wins+'–'+(n-wins),'ชนะ–แพ้')+st(wr+'%','อัตราชนะ')+
     st(fx(avg(g,x=>x.myLore)),'ลอร์เฉลี่ยของคุณ')+st(fx(avg(g,x=>x.oppLore)),'ลอร์เฉลี่ยคู่แข่ง');
-
   const wg=g.filter(x=>x.result==='ชนะ'), lg=g.filter(x=>x.result==='แพ้');
   document.getElementById('statsTurn').innerHTML=
-    st(fx(avg(g,x=>x.endTurn)),'เทิร์นเฉลี่ยที่เกมจบ')+
-    st(fx(avg(wg,x=>x.endTurn)),'เทิร์นเฉลี่ยตอนชนะ')+
-    st(fx(avg(lg,x=>x.endTurn)),'เทิร์นเฉลี่ยตอนแพ้')+
-    st(fx(avg(g,x=>20-x.myLore)),'ลอร์ที่ขาดไปจาก 20');
-
-  const mg=g.filter(x=>x.mull);
-  const cnt=v=>mg.filter(x=>x.mull.verdict===v).length;
+    st(fx(avg(g,x=>x.endTurn)),'เทิร์นเฉลี่ยที่เกมจบ')+st(fx(avg(wg,x=>x.endTurn)),'เทิร์นเฉลี่ยตอนชนะ')+
+    st(fx(avg(lg,x=>x.endTurn)),'เทิร์นเฉลี่ยตอนแพ้')+st(fx(avg(g,x=>20-x.myLore)),'ลอร์ที่ขาดไปจาก 20');
+  const mg=g.filter(x=>x.mull), cnt=v=>mg.filter(x=>x.mull.verdict===v).length;
   document.getElementById('statsMull').innerHTML=
     st(fx(avg(mg,x=>x.mull.count)),'ทิ้งเฉลี่ยต่อเกม')+
     st('<span class="w">'+cnt('ถูกต้อง')+'</span>','ตัดสินใจถูก')+
     st('<span class="l">'+cnt('ผิดพลาด')+'</span>','ตัดสินใจผิด')+
     st('<span class="u">'+cnt('ไม่แน่ใจ')+'</span>','ไม่แน่ใจ');
 
-  renderOppStats(g); renderVerStats(g); renderGameList(g);
-  document.getElementById('deckGrid').innerHTML=deckTable(DATA.deck.cards);
-  document.getElementById('issues').innerHTML=DATA.issues.map(i=>'<li>'+esc(i)+'</li>').join('');
-  document.getElementById('verdicts').innerHTML='<tr><th>การ์ด</th><th>บทบาทที่เห็น</th><th>ข้อสรุป</th></tr>'+
-    DATA.verdicts.map(v=>'<tr><td>'+cardLink(v.card)+'</td><td>'+esc(v.note)+
-      '</td><td><span class="pill '+v.status+'">'+esc(v.label)+'</span></td></tr>').join('');
+  renderOppStats(g); renderVerStats(g); renderGameList(g); renderOverall();
+  document.getElementById('deckGrid').innerHTML=d.cards.length?deckTable(d.cards)
+    :'<div class="empty">ยังไม่มีเด็ค — วางเด็คลิสต์ตอนบันทึกเกมใหม่</div>';
+  document.getElementById('issues').innerHTML=U().issues.length
+    ?U().issues.map(i=>'<li>'+esc(i)+'</li>').join(''):'<div class="empty">ยังไม่มีข้อมูล</div>';
+  document.getElementById('verdicts').innerHTML=U().verdicts.length
+    ?('<tr><th>การ์ด</th><th>บทบาทที่เห็น</th><th>ข้อสรุป</th></tr>'+
+      U().verdicts.map(v=>'<tr><td>'+cardLink(v.card)+'</td><td>'+esc(v.note)+
+      '</td><td><span class="pill '+v.status+'">'+esc(v.label)+'</span></td></tr>').join(''))
+    :'<tr><td class="empty">ยังไม่มีข้อมูล</td></tr>';
   fillDatalists(g);
 }
-function st(num,lbl,sm){return '<div class="stat"><div class="num'+(sm?' sm':'')+'">'+num+'</div><div class="lbl">'+lbl+'</div></div>';}
+function st(num,lbl){return '<div class="stat"><div class="num">'+num+'</div><div class="lbl">'+lbl+'</div></div>';}
 
 function renderOppStats(g){
   const m={};
-  g.forEach(function(x){
-    const k=x.opponent||'(ไม่ระบุ)';
+  g.forEach(function(x){const k=x.opponent||'(ไม่ระบุ)';
     m[k]=m[k]||{n:0,w:0,my:0,op:0,t:[]};
-    m[k].n++; if(x.result==='ชนะ')m[k].w++;
-    m[k].my+=x.myLore; m[k].op+=x.oppLore;
-    if(typeof x.endTurn==='number')m[k].t.push(x.endTurn);
-  });
+    m[k].n++; if(x.result==='ชนะ')m[k].w++; m[k].my+=x.myLore; m[k].op+=x.oppLore;
+    if(typeof x.endTurn==='number')m[k].t.push(x.endTurn);});
   const rows=Object.entries(m).sort((a,b)=>b[1].n-a[1].n||a[0].localeCompare(b[0]));
-  if(!rows.length){document.getElementById('oppStats').innerHTML='<div class="empty">ยังไม่มีข้อมูล</div>';return;}
-  document.getElementById('oppStats').innerHTML=
-    '<table class="t"><tr><th>คู่ต่อสู้</th><th>เกม</th><th>ชนะ–แพ้</th><th>อัตราชนะ</th><th>ลอร์เฉลี่ย</th><th>เทิร์นจบ</th></tr>'+
-    rows.map(function(r){
-      const k=r[0],v=r[1],wr=Math.round(v.w/v.n*100);
+  document.getElementById('oppStats').innerHTML=rows.length?
+    ('<table class="t"><tr><th>คู่ต่อสู้</th><th>เกม</th><th>ชนะ–แพ้</th><th>อัตราชนะ</th><th>ลอร์เฉลี่ย</th><th>เทิร์นจบ</th></tr>'+
+    rows.map(function(r){const k=r[0],v=r[1],wr=Math.round(v.w/v.n*100);
       const t=v.t.length?(v.t.reduce((a,b)=>a+b,0)/v.t.length).toFixed(0):'—';
       return '<tr><td>'+esc(k)+'</td><td class="n">'+v.n+'</td>'+
         '<td class="n"><span class="w">'+v.w+'</span>–<span class="l">'+(v.n-v.w)+'</span></td>'+
         '<td class="n">'+wr+'%<div class="bar"><i style="width:'+wr+'%"></i></div></td>'+
         '<td class="n">'+(v.my/v.n).toFixed(1)+' : '+(v.op/v.n).toFixed(1)+'</td>'+
-        '<td class="n">'+t+'</td></tr>';}).join('')+'</table>';
+        '<td class="n">'+t+'</td></tr>';}).join('')+'</table>')
+    :'<div class="empty">ยังไม่มีข้อมูล</div>';
 }
-
 function renderVerStats(g){
   const m={};
-  g.forEach(function(x,i){
-    const k=verOf(i);
+  g.forEach(function(x,i){const k=verOf(i);
     m[k]=m[k]||{n:0,w:0,my:0,t:[],first:x.date,last:x.date};
     m[k].n++; if(x.result==='ชนะ')m[k].w++; m[k].my+=x.myLore;
     if(typeof x.endTurn==='number')m[k].t.push(x.endTurn);
-    if(x.date<m[k].first)m[k].first=x.date;
-    if(x.date>m[k].last)m[k].last=x.date;
-  });
+    if(x.date<m[k].first)m[k].first=x.date; if(x.date>m[k].last)m[k].last=x.date;});
   const rows=Object.entries(m).sort((a,b)=>b[1].last.localeCompare(a[1].last));
-  if(!rows.length){document.getElementById('verStats').innerHTML='<div class="empty">ยังไม่มีข้อมูล</div>';return;}
-  document.getElementById('verStats').innerHTML=
-    '<table class="t"><tr><th>เวอร์ชัน</th><th>ช่วงที่ใช้</th><th>เกม</th><th>ชนะ–แพ้</th><th>อัตราชนะ</th><th>ลอร์เฉลี่ย</th><th>เทิร์นจบ</th></tr>'+
-    rows.map(function(r){
-      const k=r[0],v=r[1],wr=Math.round(v.w/v.n*100);
+  document.getElementById('verStats').innerHTML=rows.length?
+    ('<table class="t"><tr><th>เวอร์ชัน</th><th>ช่วงที่ใช้</th><th>เกม</th><th>ชนะ–แพ้</th><th>อัตราชนะ</th><th>ลอร์เฉลี่ย</th><th>เทิร์นจบ</th></tr>'+
+    rows.map(function(r){const k=r[0],v=r[1],wr=Math.round(v.w/v.n*100);
       const t=v.t.length?(v.t.reduce((a,b)=>a+b,0)/v.t.length).toFixed(0):'—';
-      const span=v.first===v.last?v.first:v.first+' → '+v.last;
-      return '<tr><td>'+esc(k)+'</td><td class="n">'+esc(span)+'</td><td class="n">'+v.n+'</td>'+
+      const sp=v.first===v.last?v.first:v.first+' → '+v.last;
+      return '<tr><td>'+esc(k)+'</td><td class="n">'+esc(sp)+'</td><td class="n">'+v.n+'</td>'+
         '<td class="n"><span class="w">'+v.w+'</span>–<span class="l">'+(v.n-v.w)+'</span></td>'+
         '<td class="n">'+wr+'%<div class="bar"><i style="width:'+wr+'%"></i></div></td>'+
-        '<td class="n">'+(v.my/v.n).toFixed(1)+'</td><td class="n">'+t+'</td></tr>';}).join('')+'</table>';
+        '<td class="n">'+(v.my/v.n).toFixed(1)+'</td><td class="n">'+t+'</td></tr>';}).join('')+'</table>')
+    :'<div class="empty">ยังไม่มีข้อมูล</div>';
 }
-
 function renderGameList(g){
-  document.getElementById('gameList').innerHTML=g.map(function(x,i){
-    const win=x.result==='ชนะ', isP=i<pending.length;
+  document.getElementById('gameList').innerHTML=g.length?g.map(function(x,i){
+    const win=x.result==='ชนะ', isP=i<pendOf().length, hasA=!!analOf(x);
     return '<div class="gamecard" onclick="openGame('+i+')">'+
       '<div class="gtop"><span class="opp">'+esc(x.opponent)+'</span>'+
       '<span class="sc"><span class="'+(win?'w':'l')+'">'+x.myLore+'</span> — '+x.oppLore+'</span></div>'+
-      '<div class="dt">'+esc(x.date)+' · '+esc(x.result)+
-      (x.endTurn?' · จบเทิร์น '+x.endTurn:'')+
-      (x.timeline?' · '+x.timeline.length+' เทิร์นที่บันทึก':'')+
+      '<div class="dt">'+esc(x.date)+' · '+esc(x.result)+(x.endTurn?' · จบเทิร์น '+x.endTurn:'')+
       (isP?' · <span class="pending">ยังไม่ซิงก์</span>':'')+
-      ' &nbsp;<span class="tagv">'+esc(verOf(i))+'</span></div></div>';}).join('');
+      ' &nbsp;<span class="tagv">'+esc(verOf(i))+'</span>'+
+      (hasA?' <span class="tagA">มีบทวิเคราะห์</span>':'')+'</div></div>';}).join('')
+    :'<div class="empty">ยังไม่มีเกม — ไปที่แท็บบันทึกเกมใหม่</div>';
 }
-
 function cardLink(n){const c=findCard(n);
   if(!c)return '<span class="cardlink dead">'+esc(n)+'</span>';
   return '<a class="cardlink" onclick="jumpToCard(\''+esc(n).replace(/'/g,"\\'")+'\')">'+
@@ -523,6 +550,124 @@ function jumpToCard(n){showPage('cards');
   document.getElementById('q').value=String(n).split(' - ')[0];
   ['ink','set','type','rar'].forEach(k=>F[k].clear()); syncChips(); applyCards();}
 
+/* ---------- บทวิเคราะห์ ---------- */
+function analHTML(a,who){
+  if(!a)return '';
+  const sec=(t,arr)=>(arr&&arr.length)?'<h4>'+t+'</h4><ul>'+arr.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'';
+  return '<div class="anal"><div class="ah"><span>บทวิเคราะห์จาก Claude'+(who?' — '+esc(who):'')+'</span>'+
+    (a.date?'<span>'+esc(a.date)+'</span>':'')+'</div>'+
+    (a.summary?'<div class="sum">'+esc(a.summary)+'</div>':'')+
+    sec('จุดเปลี่ยนสำคัญ',a.keyMoments)+sec('ข้อผิดพลาด',a.mistakes)+sec('ข้อเสนอแนะ',a.suggestions)+
+    (a.verdict?'<div class="vd">'+esc(a.verdict)+'</div>':'')+
+    (a.raw?'<div class="sum" style="white-space:pre-wrap">'+esc(a.raw)+'</div>':'')+'</div>';
+}
+function parseAnalysis(txt){
+  txt=String(txt||'').trim(); if(!txt)return null;
+  let m=txt.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const cand=m?m[1].trim():txt;
+  try{const o=JSON.parse(cand);
+    if(o&&typeof o==='object'){
+      const norm=v=>Array.isArray(v)?v.map(String):(v?[String(v)]:[]);
+      return{summary:o.summary?String(o.summary):'',keyMoments:norm(o.keyMoments||o.key_moments),
+        mistakes:norm(o.mistakes),suggestions:norm(o.suggestions),
+        verdict:o.verdict?String(o.verdict):'',date:new Date().toISOString().slice(0,10)};
+    }}catch(e){}
+  return {raw:txt,date:new Date().toISOString().slice(0,10)};
+}
+const SCHEMA='```json\n{\n'+
+'  "summary": "สรุปภาพรวม 2-3 ประโยค ว่าเกิดอะไรขึ้นและทำไมจึงได้ผลแบบนั้น",\n'+
+'  "keyMoments": ["จุดเปลี่ยนที่ตัดสินเกม ระบุเทิร์นด้วย เช่น T7 โดนแบนิช Pooh Archmage หลังเพิ่งทำ 3 lore"],\n'+
+'  "mistakes": ["สิ่งที่เล่นพลาดหรือตัดสินใจผิด พร้อมบอกว่าควรทำอะไรแทน"],\n'+
+'  "suggestions": ["ข้อเสนอแนะที่ลงมือทำได้จริง เช่น ตัดการ์ดใบไหน เพิ่มอะไร ปรับการเล่นอย่างไร"],\n'+
+'  "verdict": "ข้อสรุปหนึ่งประโยคว่าปัญหาหลักคืออะไร"\n}\n```';
+
+const RULES='ข้อกำหนดการตอบ:\n'+
+'- ตอบเป็นภาษาไทย\n'+
+'- ตอบกลับเป็น JSON ในโค้ดบล็อก ```json ตามโครงด้านล่างเท่านั้น ไม่ต้องมีข้อความอื่นนอกบล็อก\n'+
+'- อ้างอิงเทิร์นและชื่อการ์ดจริงจากข้อมูลที่ให้ อย่าเดาการ์ดที่ไม่ได้อยู่ในข้อมูล\n'+
+'- แต่ละ array ใส่ 2-5 ข้อ เขียนให้เฉพาะเจาะจง ไม่เอาคำแนะนำกว้างๆ\n'+
+'- ถ้าข้อมูลไม่พอจะสรุปเรื่องใด ให้บอกตรงๆ แทนการเดา\n\n'+
+'โครงที่ต้องตอบ:\n'+SCHEMA+'\n\n';
+
+const HEAD_MATCH='คุณคือโค้ช Disney Lorcana ที่วิเคราะห์รีเพลย์แบบตรงไปตรงมา\n'+
+'งาน: วิเคราะห์แมตช์เดียวด้านล่าง หาสาเหตุที่แท้จริงว่าทำไมถึงได้ผลแบบนั้น\n'+
+'โฟกัสที่: จังหวะที่เสียเปรียบ การแลกการ์ดที่ไม่คุ้ม การตัดสินใจมัลลิแกน การใช้ทรัพยากร และการ์ดในเด็คที่ไม่ทำงาน\n\n'+RULES;
+
+const HEAD_OVERALL='คุณคือโค้ช Disney Lorcana ที่วิเคราะห์แนวโน้มจากหลายแมตช์\n'+
+'งาน: วิเคราะห์ภาพรวมทุกแมตช์ด้านล่าง หารูปแบบที่เกิดซ้ำ ไม่ใช่เล่าเหตุการณ์รายเกม\n'+
+'โฟกัสที่: แพ้ทางเด็คแนวไหน จุดอ่อนเชิงโครงสร้างของเด็ค การ์ดที่ควรตัด/เพิ่ม และแนวโน้มการมัลลิแกน\n\n'+RULES;
+
+function gamePrompt(i){
+  const g=allGames(), x=g[i], dk=deckForGame(i);
+  let s=HEAD_MATCH+'=== ข้อมูลแมตช์ ===\n';
+  s+='ผู้เล่น: '+USER+'\nวันที่: '+x.date+'\nคู่ต่อสู้: '+x.opponent+'\n';
+  if(x.oppDetail)s+='รายละเอียดคู่ต่อสู้: '+x.oppDetail+'\n';
+  s+='ผล: '+x.result+' ('+USER+' '+x.myLore+' — คู่แข่ง '+x.oppLore+' lore)\n';
+  if(x.endTurn)s+='เกมจบเทิร์นที่: '+x.endTurn+'\n';
+  s+='เวอร์ชันเด็ค: '+verOf(i)+'\n';
+  if(x.mull)s+='มัลลิแกน: ทิ้ง '+x.mull.count+' ใบ ('+(x.mull.discarded||'-')+') ประเมิน: '+x.mull.verdict+
+    (x.mull.note?' — '+x.mull.note:'')+'\n';
+  s+='\n--- เด็คที่ใช้ ('+dk.deck.reduce((a,c)=>a+c.qty,0)+' ใบ) ---\n';
+  s+=dk.deck.map(c=>c.qty+' '+c.name).join('\n');
+  if(x.timeline&&x.timeline.length){s+='\n\n--- ไทม์ไลน์ ---\n';
+    s+=x.timeline.map(t=>t.turn+' | '+(t.side==='opp'?'คู่แข่ง':USER)+(t.key?' [สำคัญ]':'')+' | '+t.text).join('\n');}
+  return s;
+}
+function overallPrompt(){
+  const g=allGames();
+  let s=HEAD_OVERALL+'=== ข้อมูลภาพรวมทุกแมตช์ ===\n';
+  s+='ผู้เล่น: '+USER+'\nเด็ค: '+U().deck.name+' ('+U().deck.inks+')\nจำนวนเกม: '+g.length+'\n';
+  const w=g.filter(x=>x.result==='ชนะ').length;
+  s+='สถิติ: ชนะ '+w+' แพ้ '+(g.length-w)+'\n';
+  s+='ลอร์เฉลี่ยของผู้เล่น: '+fx(avg(g,x=>x.myLore))+' / คู่แข่ง: '+fx(avg(g,x=>x.oppLore))+'\n';
+  s+='เทิร์นเฉลี่ยที่เกมจบ: '+fx(avg(g,x=>x.endTurn))+'\n\n';
+  s+='--- เด็คปัจจุบัน ---\n'+U().deck.cards.map(c=>c.qty+' '+c.name).join('\n')+'\n\n';
+  s+='--- สรุปแต่ละแมตช์ ---\n';
+  s+=g.map(function(x,i){
+    let r='['+x.date+'] vs '+x.opponent+' — '+x.result+' '+x.myLore+':'+x.oppLore+
+      (x.endTurn?' (จบเทิร์น '+x.endTurn+')':'')+' เวอร์ชัน '+verOf(i);
+    if(x.mull)r+='\n   มัลลิแกน ทิ้ง '+x.mull.count+' ใบ ('+(x.mull.discarded||'-')+') ประเมิน '+x.mull.verdict;
+    if(x.timeline&&x.timeline.length){
+      const keys=x.timeline.filter(t=>t.key);
+      if(keys.length)r+='\n   จุดเปลี่ยน: '+keys.map(t=>t.turn+' '+t.text).join(' / ');}
+    return r;}).join('\n');
+  if(U().issues.length)s+='\n\n--- ปัญหาที่บันทึกไว้ ---\n'+U().issues.map(x=>'- '+x).join('\n');
+  return s;
+}
+async function copyText(txt,btn,label){
+  try{await navigator.clipboard.writeText(txt);
+    const o=btn.textContent; btn.textContent='คัดลอกแล้ว — ไปวางในแชท Claude';
+    setTimeout(()=>{btn.textContent=o;},2200);
+  }catch(e){
+    const w=window.open('','_blank');
+    if(w){w.document.write('<pre style="white-space:pre-wrap;font-family:monospace">'+esc(txt)+'</pre>');}
+    else btn.textContent='คัดลอกไม่ได้ — ลองใหม่';
+  }
+}
+function renderOverall(){
+  const a=overallOf();
+  document.getElementById('overallView').innerHTML=a?analHTML(a,USER)
+    :'<div class="empty">ยังไม่มีบทวิเคราะห์ภาพรวม</div>';
+  const t=document.getElementById('ov-text'); if(a&&!t.value&&a.raw)t.value=a.raw;
+}
+document.getElementById('copyOverall').addEventListener('click',function(){
+  if(!allGames().length){alert('ยังไม่มีเกมให้วิเคราะห์');return;}
+  copyText(overallPrompt(),this);});
+document.getElementById('toggleOverallPaste').addEventListener('click',function(){
+  const el=document.getElementById('overallPaste');
+  el.style.display=el.style.display==='none'?'block':'none';});
+document.getElementById('saveOverall').addEventListener('click',function(){
+  const a=parseAnalysis(document.getElementById('ov-text').value);
+  if(!a){document.getElementById('ovMsg').innerHTML='<div class="err">ยังไม่ได้วางข้อความ</div>';return;}
+  analyses[OVKEY()]=a; localStorage.setItem(LS_ANAL,JSON.stringify(analyses));
+  document.getElementById('ovMsg').innerHTML='<div class="ok">บันทึกบทวิเคราะห์ภาพรวมแล้ว — อย่าลืมซิงก์</div>';
+  renderOverall(); renderSync();});
+document.getElementById('delOverall').addEventListener('click',function(){
+  delete analyses[OVKEY()]; localStorage.setItem(LS_ANAL,JSON.stringify(analyses));
+  document.getElementById('ov-text').value='';
+  document.getElementById('ovMsg').innerHTML='<div class="ok">ลบแล้ว (ถ้าเคยซิงก์ไว้ ต้องซิงก์อีกครั้งเพื่อลบบน GitHub)</div>';
+  renderOverall(); renderSync();});
+
 function openGame(i){
   const g=allGames(), x=g[i], dk=deckForGame(i);
   const total=dk.deck.reduce((a,c)=>a+c.qty,0);
@@ -536,17 +681,42 @@ function openGame(i){
     :(x.mulligan?'<div class="mullbox">'+esc(x.mulligan)+'</div>':'');
   document.getElementById('detailBody').innerHTML=
     '<h1>'+esc(x.opponent)+'</h1><p class="lead">'+esc(x.oppDetail||'')+'</p>'+
-    '<div class="result-banner"><div><span class="vs">'+esc(x.date)+
+    '<div class="result-banner"><div><span class="vs">'+esc(USER)+' · '+esc(x.date)+
     (x.endTurn?' · เกมจบเทิร์นที่ '+x.endTurn:'')+' · เวอร์ชัน '+esc(verOf(i))+'</span></div>'+
-    '<div class="score"><span class="you">คุณ '+x.myLore+'</span> — <span class="opp">คู่แข่ง '+x.oppLore+'</span></div></div>'+
+    '<div class="score"><span class="you">'+esc(USER)+' '+x.myLore+'</span> — <span class="opp">คู่แข่ง '+x.oppLore+'</span></div></div>'+
     mull+
+    '<div class="analbar"><button class="btn sm" onclick="copyGame('+i+',this)">คัดลอกแมตช์นี้ส่งให้ Claude</button>'+
+    '<button class="btn ghost sm" onclick="togglePaste()">วางบทวิเคราะห์</button></div>'+
+    '<div id="gamePaste" style="display:none"><div class="form">'+
+    '<div><label for="gm-text">วางผลที่ Claude ตอบกลับมา</label><textarea id="gm-text"></textarea></div>'+
+    '<div class="frow"><button class="btn sm" onclick="saveGameAnal('+i+')">บันทึกบทวิเคราะห์</button>'+
+    '<button class="btn ghost sm" onclick="delGameAnal('+i+')">ลบ</button></div></div><div id="gmMsg"></div></div>'+
+    '<div id="gameAnalView">'+(analOf(x)?analHTML(analOf(x),esc(x.date)+' vs '+esc(x.opponent)):'')+'</div>'+
+    '<h2>ไทม์ไลน์</h2>'+
     '<div class="timeline">'+(x.timeline||[]).map(t=>'<div class="t-item '+(t.side==='opp'?'opp':'')+' '+(t.key?'key':'')+'">'+
-      '<div class="t-head"><span class="turn">'+esc(t.turn)+'</span> '+(t.side==='opp'?'คู่แข่ง':'คุณ')+'</div>'+
+      '<div class="t-head"><span class="turn">'+esc(t.turn)+'</span> '+(t.side==='opp'?'คู่แข่ง':esc(USER))+'</div>'+
       '<div class="t-body">'+esc(t.text)+'</div></div>').join('')+'</div>'+
     '<h2>เด็คที่ใช้ <span style="font-family:\'Sarabun\',sans-serif;font-weight:400;font-size:.83rem;color:var(--soft);">'+
     total+' ใบ · '+src+'</span></h2><div class="deck-grid">'+deckTable(dk.deck)+'</div>';
   showPage('gameDetail');
 }
+function copyGame(i,btn){copyText(gamePrompt(i),btn);}
+function togglePaste(){const el=document.getElementById('gamePaste');
+  el.style.display=el.style.display==='none'?'block':'none';}
+function saveGameAnal(i){
+  const x=allGames()[i], a=parseAnalysis(document.getElementById('gm-text').value);
+  if(!a){document.getElementById('gmMsg').innerHTML='<div class="err">ยังไม่ได้วางข้อความ</div>';return;}
+  analyses[gKey(x)]=a; localStorage.setItem(LS_ANAL,JSON.stringify(analyses));
+  document.getElementById('gameAnalView').innerHTML=analHTML(a,esc(x.date)+' vs '+esc(x.opponent));
+  document.getElementById('gmMsg').innerHTML='<div class="ok">บันทึกแล้ว — อย่าลืมซิงก์</div>';
+  renderAll(); renderSync();}
+function delGameAnal(i){
+  const x=allGames()[i]; delete analyses[gKey(x)];
+  localStorage.setItem(LS_ANAL,JSON.stringify(analyses));
+  document.getElementById('gameAnalView').innerHTML='';
+  document.getElementById('gm-text').value='';
+  document.getElementById('gmMsg').innerHTML='<div class="ok">ลบแล้ว</div>';
+  renderAll(); renderSync();}
 
 function fillDatalists(g){
   const opps=[...new Set(g.map(x=>x.opponent).filter(Boolean))];
@@ -655,8 +825,9 @@ function buildGame(){
 document.getElementById('saveBtn').addEventListener('click',function(){
   const o=buildGame();
   if(!o.date){document.getElementById('saveMsg').innerHTML='<div class="err">ใส่วันที่ด้วย</div>';return;}
-  pending.unshift(o); localStorage.setItem(LS_PENDING,JSON.stringify(pending));
-  document.getElementById('saveMsg').innerHTML='<div class="ok">บันทึกลงเครื่องแล้ว — ตอนนี้มี '+pending.length+' เกมรอซิงก์</div>';
+  pending[USER]=pending[USER]||[]; pending[USER].unshift(o);
+  localStorage.setItem(LS_PENDING,JSON.stringify(pending));
+  document.getElementById('saveMsg').innerHTML='<div class="ok">บันทึกเกมของ '+esc(USER)+' แล้ว — รอซิงก์ '+pending[USER].length+' เกม</div>';
   ['f-opp','f-oppdetail','f-tl','f-deck','f-mulldisc','f-mullnote','f-endturn'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-my').value=0; document.getElementById('f-opp-lore').value=0;
   document.getElementById('f-mullcount').value=0;
@@ -664,10 +835,8 @@ document.getElementById('saveBtn').addEventListener('click',function(){
 document.getElementById('genBtn').addEventListener('click',function(){
   document.getElementById('out').textContent=JSON.stringify(buildGame(),null,2)+',';
   document.getElementById('outWrap').style.display='block';});
-document.getElementById('copyBtn').addEventListener('click',async function(){
-  try{await navigator.clipboard.writeText(document.getElementById('out').textContent);
-    this.textContent='คัดลอกแล้ว'; setTimeout(()=>{this.textContent='คัดลอก';},1600);
-  }catch(e){this.textContent='คัดลอกไม่ได้ — เลือกข้อความเอง';}});
+document.getElementById('copyBtn').addEventListener('click',function(){
+  copyText(document.getElementById('out').textContent,this);});
 
 /* ---------- ซิงก์ ---------- */
 function cfg(){return JSON.parse(localStorage.getItem(LS_CFG)||'{}');}
@@ -683,24 +852,44 @@ document.getElementById('clearCfg').addEventListener('click',function(){
   const c=cfg(); delete c.token; localStorage.setItem(LS_CFG,JSON.stringify(c));
   document.getElementById('s-token').value='';
   document.getElementById('pushMsg').innerHTML='<div class="ok">ลบ token ออกจากเครื่องแล้ว</div>';});
+function pendTotal(){return Object.values(pending).reduce((a,v)=>a+v.length,0);}
 function renderSync(){
-  document.getElementById('syncStatus').innerHTML=pending.length
-    ?'<div class="warn">มี '+pending.length+' เกมรอซิงก์: '+pending.map(p=>esc(p.date+' vs '+p.opponent)).join(' · ')+'</div>'
-    :'<div class="ok">ไม่มีเกมค้างรอซิงก์</div>';
-  document.getElementById('pushBtn').disabled=!pending.length;
-  document.getElementById('discardBtn').disabled=!pending.length;}
-function mergedJSON(){const d=JSON.parse(JSON.stringify(DATA)); d.games=pending.concat(d.games);
-  return JSON.stringify(d,null,2)+'\n';}
+  const pt=pendTotal(), at=Object.keys(analyses).length;
+  const parts=[];
+  Object.entries(pending).forEach(([u,v])=>{if(v.length)parts.push(u+': '+v.length+' เกม');});
+  if(at)parts.push('บทวิเคราะห์ '+at+' รายการ');
+  document.getElementById('syncStatus').innerHTML=(pt||at)
+    ?'<div class="warn">รอซิงก์ — '+esc(parts.join(' · '))+'</div>'
+    :'<div class="ok">ไม่มีข้อมูลค้างรอซิงก์</div>';
+  document.getElementById('pushBtn').disabled=!(pt||at);
+  document.getElementById('discardBtn').disabled=!(pt||at);
+}
+function mergedJSON(){
+  const d=JSON.parse(JSON.stringify(DATA));
+  Object.keys(d.users).forEach(function(u){
+    if(pending[u]&&pending[u].length)d.users[u].games=pending[u].concat(d.users[u].games);
+  });
+  Object.entries(analyses).forEach(function(e){
+    const parts=e[0].split('|'), u=parts[0], a=e[1];
+    if(!d.users[u])return;
+    if(parts[1]==='__overall__'){d.users[u].overallAnalysis=a;return;}
+    const g=d.users[u].games.find(x=>x.date===parts[1]&&x.opponent===parts.slice(2).join('|'));
+    if(g)g.analysis=a;
+  });
+  return JSON.stringify(d,null,2)+'\n';
+}
 document.getElementById('exportBtn').addEventListener('click',function(){
   document.getElementById('exportOut').textContent=mergedJSON();
   document.getElementById('exportWrap').style.display='block';});
 document.getElementById('discardBtn').addEventListener('click',function(){
-  if(!confirm('ทิ้งเกมที่รอซิงก์ทั้งหมด? กู้คืนไม่ได้'))return;
-  pending=[]; localStorage.setItem(LS_PENDING,'[]'); renderAll(); renderSync();
+  if(!confirm('ทิ้งข้อมูลที่รอซิงก์ทั้งหมด (ทุกผู้เล่น)? กู้คืนไม่ได้'))return;
+  pending={}; analyses={};
+  localStorage.setItem(LS_PENDING,'{}'); localStorage.setItem(LS_ANAL,'{}');
+  renderAll(); renderSync();
   document.getElementById('pushMsg').innerHTML='<div class="ok">ล้างรายการรอซิงก์แล้ว</div>';});
 document.getElementById('pushBtn').addEventListener('click',async function(){
   const c=cfg(), msg=document.getElementById('pushMsg');
-  if(!c.owner||!c.repo||!c.token){msg.innerHTML='<div class="err">กรอกชื่อผู้ใช้ ชื่อ repo และ token ให้ครบก่อน แล้วกดบันทึกการตั้งค่า</div>';return;}
+  if(!c.owner||!c.repo||!c.token){msg.innerHTML='<div class="err">กรอกชื่อผู้ใช้ ชื่อ repo และ token ให้ครบก่อน</div>';return;}
   const btn=this; btn.disabled=true; btn.textContent='กำลังซิงก์…';
   const api='https://api.github.com/repos/'+c.owner+'/'+c.repo+'/contents/games.json';
   const H={Authorization:'Bearer '+c.token,Accept:'application/vnd.github+json'};
@@ -711,13 +900,14 @@ document.getElementById('pushBtn').addEventListener('click',async function(){
     const bytes=new TextEncoder().encode(body); let bin='';
     bytes.forEach(b=>{bin+=String.fromCharCode(b);});
     const put=await fetch(api,{method:'PUT',headers:Object.assign({},H,{'Content-Type':'application/json'}),
-      body:JSON.stringify({message:'เพิ่ม '+pending.length+' เกม',content:btoa(bin),sha:sha})});
-    if(!put.ok){const e=await put.json().catch(()=>({})); throw new Error(e.message||'HTTP '+put.status);}
-    DATA=JSON.parse(body); pending=[]; localStorage.setItem(LS_PENDING,'[]');
-    msg.innerHTML='<div class="ok">ซิงก์สำเร็จ — หน้าเว็บบน GitHub Pages จะอัปเดตใน 1–2 นาที</div>';
+      body:JSON.stringify({message:'อัปเดตเกมและบทวิเคราะห์',content:btoa(bin),sha:sha})});
+    if(!put.ok){const e=await put.json().catch(()=>({}));throw new Error(e.message||'HTTP '+put.status);}
+    DATA=JSON.parse(body); pending={}; analyses={};
+    localStorage.setItem(LS_PENDING,'{}'); localStorage.setItem(LS_ANAL,'{}');
+    msg.innerHTML='<div class="ok">ซิงก์สำเร็จ — GitHub Pages จะอัปเดตใน 1–2 นาที</div>';
     renderAll(); renderSync();
   }catch(e){msg.innerHTML='<div class="err">ซิงก์ไม่สำเร็จ: '+esc(e.message)+'</div>';}
-  btn.textContent='ซิงก์ขึ้น GitHub'; btn.disabled=!pending.length;});
+  btn.textContent='ซิงก์ขึ้น GitHub'; btn.disabled=!(pendTotal()||Object.keys(analyses).length);});
 </script>
 </body>
 </html>
