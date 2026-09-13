@@ -180,10 +180,34 @@
   .pending{color:var(--amberlore);}
   .empty{font-family:"Sarabun",sans-serif; color:var(--soft); font-size:.9rem; padding:14px 0;}
 
-  @media (max-width:640px){
-    .stat-row{grid-template-columns:repeat(2,1fr);}
+  .scroll-x{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .scroll-x table.t{min-width:520px;}
+
+  @media (max-width:760px){
+    main{padding:24px 16px 80px;}
+    nav{padding:0 16px;}
+    .userbar{padding:10px 16px 0;}
+    h1{font-size:1.45rem;}
+    h2{font-size:1.06rem; margin:26px 0 10px;}
+    .lead{font-size:.92rem; margin-bottom:20px;}
+    .stat-row{grid-template-columns:repeat(2,1fr); gap:8px;}
+    .stat{padding:13px 9px;} .stat .num{font-size:1.35rem;} .stat .lbl{font-size:.75rem;}
     .deck-grid,.form .two,.form .three{grid-template-columns:1fr;}
-    table.t{font-size:.85rem;} table.t th,table.t td{padding:7px 6px;}
+    table.t{font-size:.84rem;} table.t th,table.t td{padding:7px 7px;}
+    .analbar .btn,.frow .btn{flex:1 1 auto; min-width:44%;}
+    .btn{padding:12px 14px;}
+    .chip{padding:7px 12px; font-size:.85rem;}
+    .cardrow .top{gap:6px;}
+    .timeline{padding-right:20px;}
+    .result-banner{flex-direction:column; align-items:flex-start;}
+    .form textarea{min-height:130px; font-size:16px;}
+    .form input,.form select,.fbar input[type=text]{font-size:16px; padding:11px 12px;}
+  }
+  @media (max-width:400px){
+    .stat-row{grid-template-columns:1fr 1fr;}
+    .stat .num{font-size:1.2rem;}
+    nav button{padding:13px 10px; font-size:.88rem;}
+    .userbar .ul{display:none;}
   }
 </style>
 </head>
@@ -191,18 +215,25 @@
 <div class="band"></div>
 <div class="userbar"><span class="ul">ผู้เล่น</span><div id="userBtns"></div></div>
 <nav>
-  <button class="active" data-page="deck">เด็ค</button>
-  <button data-page="savedeck">บันทึกเด็ค</button>
-  <button data-page="games">ประวัติแข่ง</button>
-  <button data-page="add">บันทึกเกมใหม่</button>
+  <button class="active" data-page="deck">Lorcana Deck</button>
+  <button data-page="games">Competition history</button>
   <button data-page="cards">คลังการ์ด</button>
-  <button data-page="sync">ซิงก์</button>
+  <button data-page="savedeck">บันทึกเด็ค</button>
+  <button data-page="add">บันทึกเกม</button>
+  <button data-page="sync">ตั้งค่าซิงก์</button>
 </nav>
 
 <main>
   <section class="page active" id="deck">
-    <h1 id="deckTitle">เด็ค</h1>
+    <h1 id="deckTitle">Lorcana Deck</h1>
     <p class="lead" id="deckLead">กำลังโหลด…</p>
+    <div class="analbar">
+      <button class="btn sm" onclick="showPage('savedeck')">แก้ไข / บันทึกเวอร์ชันใหม่</button>
+      <button class="btn ghost sm" id="quickSync1">ซิงก์ขึ้น GitHub</button>
+      <span id="qs1" class="sublead" style="margin:0"></span>
+    </div>
+    <div class="deck-grid" id="deckGrid"></div>
+
     <h2>บทวิเคราะห์เด็ค</h2>
     <p class="sublead">คัดลอกเด็คปัจจุบันไปให้ Claude วิเคราะห์ แล้ววางผลกลับมาเก็บไว้ที่นี่</p>
     <div class="analbar">
@@ -220,17 +251,13 @@
     <div id="deckAnalView"></div>
 
     <h2>ผลแยกตามเวอร์ชันเด็ค</h2>
-    <p class="sublead">ตั้งชื่อเวอร์ชันตอนบันทึกเกม เพื่อดูว่าปรับแล้วดีขึ้นจริงไหม</p>
-    <div id="verStats"></div>
-    <h2>โครงเด็คปัจจุบัน</h2>
-    <p class="sublead">แตะชื่อการ์ดเพื่อดูรายละเอียดและความสามารถ</p>
-    <div class="deck-grid" id="deckGrid"></div>
+    <p class="sublead">ตั้งชื่อเวอร์ชันตอนบันทึกเด็ค เพื่อดูว่าปรับแล้วดีขึ้นจริงไหม</p>
+    <div class="scroll-x" id="verStats"></div>
     <h2>ปัญหาที่เจอซ้ำ</h2>
     <ul class="issues" id="issues"></ul>
     <h2>การ์ด MVP / ตัวที่ควรพิจารณาตัด</h2>
-    <table class="t"><tbody id="verdicts"></tbody></table>
+    <div class="scroll-x"><table class="t"><tbody id="verdicts"></tbody></table></div>
   </section>
-
 
   <section class="page" id="savedeck">
     <h1 id="sdTitle">บันทึกเด็ค</h1>
@@ -249,25 +276,20 @@
         <button class="btn ghost" id="dCheck">ตรวจสอบเด็ค</button>
         <button class="btn" id="dSave">บันทึกเป็นเวอร์ชันใหม่</button>
         <button class="btn ghost" id="dLoadCur">โหลดเด็คปัจจุบันมาแก้</button>
+        <button class="btn ghost" id="quickSync2">ซิงก์ขึ้น GitHub</button>
       </div>
     </div>
     <div id="dMsg"></div>
     <h2>ประวัติเวอร์ชันเด็ค</h2>
-    <div id="deckHistory"></div>
+    <div class="scroll-x" id="deckHistory"></div>
   </section>
 
   <section class="page" id="games">
-    <h1>ประวัติแข่ง</h1>
+    <h1>Competition history</h1>
     <p class="lead" id="gamesLead">กำลังโหลด…</p>
     <div id="pendingNote"></div>
     <h2>ผลการแข่ง</h2>
     <div class="stat-row" id="statsMain"></div>
-    <h2>จังหวะเกม</h2>
-    <p class="sublead">เด็คนี้ต้องการเวลากี่เทิร์นถึงจะทำงาน และเกมมักจบเมื่อไหร่</p>
-    <div class="stat-row" id="statsTurn"></div>
-    <h2>มัลลิแกน</h2>
-    <p class="sublead">ประเมินย้อนหลังว่าการตัดสินใจมัลลิแกนถูกต้องแค่ไหน</p>
-    <div class="stat-row" id="statsMull"></div>
 
     <h2>บทวิเคราะห์ภาพรวม</h2>
     <p class="sublead">คัดลอกข้อมูลรวมทุกเกมไปให้ Claude วิเคราะห์ แล้ววางผลกลับมาเก็บไว้ที่นี่</p>
@@ -287,7 +309,7 @@
     <div id="overallView"></div>
 
     <h2>สถิติแยกตามคู่ต่อสู้</h2>
-    <div id="oppStats"></div>
+    <div class="scroll-x" id="oppStats"></div>
     <h2>รายการเกม</h2>
     <p class="sublead">แตะการ์ดแต่ละใบเพื่อดูไทม์ไลน์ มัลลิแกน เด็คที่ใช้ และบทวิเคราะห์</p>
     <div id="gameList"></div>
@@ -333,6 +355,7 @@
         <textarea id="f-tl" placeholder="T2 | me | ลง Piglet&#10;T7 | opp! | แบนิช Pooh Archmage"></textarea></div>
       <div class="frow">
         <button class="btn" id="saveBtn">บันทึกลงเครื่อง</button>
+        <button class="btn ghost" id="quickSync3">ซิงก์ขึ้น GitHub</button>
         <button class="btn ghost" id="genBtn">ดู JSON อย่างเดียว</button>
       </div>
     </div>
@@ -366,7 +389,7 @@
   </section>
 
   <section class="page" id="sync">
-    <h1>ซิงก์ขึ้น GitHub</h1>
+    <h1>ตั้งค่าซิงก์</h1>
     <p class="lead">เกมและบทวิเคราะห์ที่บันทึกลงเครื่องจะรออยู่ที่นี่</p>
     <div id="syncStatus"></div>
     <div class="box">
@@ -447,7 +470,7 @@ Promise.all([
   fetch('cards.json').then(r=>{if(!r.ok)throw new Error('cards.json HTTP '+r.status);return r.json();})
 ]).then(function(a){DATA=a[0];CARDS=a[1];
   if(!DATA.users[USER])USER=Object.keys(DATA.users)[0];
-  buildIndex();buildChips();buildUserBtns();renderAll();applyCards();renderSync();})
+  buildIndex();buildChips();buildUserBtns();renderAll();applyCards();renderSync();wireQuickSync();})
 .catch(function(e){document.getElementById('deckLead').innerHTML=
   '<div class="err">โหลดข้อมูลไม่สำเร็จ: '+esc(e.message)+
   '<br>ถ้าเปิดไฟล์จากเครื่องโดยตรง เบราว์เซอร์จะบล็อกการอ่าน JSON — ต้องเปิดผ่าน GitHub Pages หรือ local server</div>';});
@@ -514,19 +537,11 @@ function renderAll(){
   document.getElementById('statsMain').innerHTML=
     st(wins+'–'+(n-wins),'ชนะ–แพ้')+st(wr+'%','อัตราชนะ')+
     st(fx(avg(g,x=>x.myLore)),'ลอร์เฉลี่ยของคุณ')+st(fx(avg(g,x=>x.oppLore)),'ลอร์เฉลี่ยคู่แข่ง');
-  const wg=g.filter(x=>x.result==='ชนะ'), lg=g.filter(x=>x.result==='แพ้');
-  document.getElementById('statsTurn').innerHTML=
-    st(fx(avg(g,x=>x.endTurn)),'เทิร์นเฉลี่ยที่เกมจบ')+st(fx(avg(wg,x=>x.endTurn)),'เทิร์นเฉลี่ยตอนชนะ')+
-    st(fx(avg(lg,x=>x.endTurn)),'เทิร์นเฉลี่ยตอนแพ้')+st(fx(avg(g,x=>20-x.myLore)),'ลอร์ที่ขาดไปจาก 20');
-  const mg=g.filter(x=>x.mull), cnt=v=>mg.filter(x=>x.mull.verdict===v).length;
-  document.getElementById('statsMull').innerHTML=
-    st(fx(avg(mg,x=>x.mull.count)),'ทิ้งเฉลี่ยต่อเกม')+
-    st('<span class="w">'+cnt('ถูกต้อง')+'</span>','ตัดสินใจถูก')+
-    st('<span class="l">'+cnt('ผิดพลาด')+'</span>','ตัดสินใจผิด')+
-    st('<span class="u">'+cnt('ไม่แน่ใจ')+'</span>','ไม่แน่ใจ');
 
   renderOppStats(g); renderVerStats(g); renderGameList(g); renderOverall();
   renderDeckAnal(); renderDeckHistory(); fillVerSelect();
+  const qs=document.getElementById('qs1');
+  if(qs)qs.innerHTML=dirty()?'<span class="pending">มี '+dirty()+' รายการรอซิงก์</span>':'';
   document.getElementById('deckGrid').innerHTML=(d.cards&&d.cards.length)?deckTable(d.cards)
     :'<div class="empty">ยังไม่มีเด็ค — วางเด็คลิสต์ตอนบันทึกเกมใหม่</div>';
   document.getElementById('issues').innerHTML=U().issues.length
@@ -1045,6 +1060,20 @@ document.getElementById('genBtn').addEventListener('click',function(){
   document.getElementById('outWrap').style.display='block';});
 document.getElementById('copyBtn').addEventListener('click',function(){
   copyText(document.getElementById('out').textContent,this);});
+
+/* ---------- ซิงก์ด่วนจากหน้าอื่น ---------- */
+function wireQuickSync(){
+  ['quickSync1','quickSync2','quickSync3'].forEach(function(id){
+    const b=document.getElementById(id); if(!b)return;
+    b.addEventListener('click',function(){
+      const c=cfg();
+      if(!c.owner||!c.repo||!c.token){
+        alert('ยังไม่ได้ตั้งค่าการเชื่อมต่อ GitHub — ไปที่แท็บตั้งค่าซิงก์ก่อน');
+        showPage('sync'); return;}
+      showPage('sync'); document.getElementById('pushBtn').click();
+    });
+  });
+}
 
 /* ---------- ซิงก์ ---------- */
 function cfg(){return JSON.parse(localStorage.getItem(LS_CFG)||'{}');}
