@@ -111,7 +111,11 @@
             "type": "Location"
           }
         ],
-        "version": "v1 ต้นฉบับ"
+        "version": "v1 ต้นฉบับ",
+        "analysis": {
+          "raw": "{\n  \"summary\": \"เด็คนี้เป็น Hunny Tribal ที่มีตัวละครนอกกลุ่ม Hunny ปนอยู่ค่อนข้างมาก (Boo, Pocahontas, Will o' the Wisp, Peter Pan, Vixey, Morph, Anna รวม 16 ใบ) ทำให้การ์ดที่อิงจำนวน Hunny ในสนาม เช่น Stick Together ของ Winnie the Pooh - Hunny Archmage และ Hunny Quest ของ Hundred Acre Wood ทำงานได้ไม่เต็มเงื่อนไขบ่อยครั้ง เส้นโค้งค่าอิงค์มีช่องโหว่ตรง 4 ink (มีแค่ 4 ใบ) คั่นระหว่างกลุ่ม 1-3 ink ที่หนาแน่นกับกลุ่ม 5-6 ink ที่หนักไป และเด็คไม่มีการ์ดแอ็คชั่นประเภทกำจัด/รบกวนคู่แข่งโดยตรงเลย พึ่งพาการปะทะและ Ward เพียงอย่างเดียว\",\n  \"keyMoments\": [\n    \"ข้อมูลที่ให้มามีเฉพาะรายการเด็คและสถิติแพ้ชนะ (0-2) ไม่มี log การเล่นแต่ละเทิร์น จึงไม่สามารถระบุจุดเปลี่ยนเกมจริงได้ ต้องมี replay หรือบันทึกเทิร์นต่อเทิร์นเพิ่มเติม\"\n  ],\n  \"mistakes\": [\n    \"ไม่มีข้อมูลการเล่นจริงรายเทิร์นให้วิเคราะห์ จึงไม่สามารถชี้จุดที่ตัดสินใจผิดพลาดในเกมได้อย่างมีหลักฐาน หากต้องการวิเคราะห์ส่วนนี้ ต้องแนบ log การเล่นหรือลำดับการ์ดที่ใช้ในแต่ละเทิร์นของทั้ง 2 เกม\"\n  ],\n  \"suggestions\": [\n    \"พิจารณาตัดตัวละครที่ไม่ใช่ Hunny และไม่ได้ช่วย synergy โดยตรง เช่น Anna - Little Sister (2 ใบ) และ Morph - Little Imitator (2 ใบ) ออก เพื่อให้เงื่อนไข Stick Together และ Hunny Quest ทำงานได้สม่ำเสมอขึ้น\",\n    \"เพิ่มการ์ดช่วง 4 ink เพื่ออุดช่องโหว่เส้นโค้ง เช่น เพิ่ม Source of the Vine หรือหาตัวละคร 4 ink สาย Hunny/Sapphire-Amethyst มาเสริม แทนที่จะกระโดดจาก 3 ink ไป 5 ink ตรง ๆ\",\n    \"ใส่การ์ดแอ็คชั่นหรือไอเทมที่กำจัด/รบกวนตัวละครคู่แข่งโดยตรง (เช่นการ์ดที่ทำ damage หรือ exert คู่แข่ง) เพราะตอนนี้เด็คไม่มีเครื่องมือกำจัดเลยนอกจากปะทะ\",\n    \"Winnie the Pooh & Piglet - Hunny Mages (Shift 3, MAGICAL MIX) ได้ประโยชน์จากจำนวนอิงค์ต่างชน",
+          "date": "2026-09-13"
+        }
       },
       "issues": [
         "Source of the Vine แทบไร้ผล — คู่แข่งเลือก \"Pay 1 ink\" เกือบทุกครั้ง รวมกันเกิน 10 ครั้งจาก 2 เกม ได้ลอร์กลับมาแค่ 3 ครั้ง",
@@ -503,7 +507,11 @@
               "type": "Location"
             }
           ],
-          "date": "2026-09-12"
+          "date": "2026-09-12",
+          "analysis": {
+            "raw": "{\n  \"summary\": \"เด็คนี้เป็น Hunny Tribal ที่มีตัวละครนอกกลุ่ม Hunny ปนอยู่ค่อนข้างมาก (Boo, Pocahontas, Will o' the Wisp, Peter Pan, Vixey, Morph, Anna รวม 16 ใบ) ทำให้การ์ดที่อิงจำนวน Hunny ในสนาม เช่น Stick Together ของ Winnie the Pooh - Hunny Archmage และ Hunny Quest ของ Hundred Acre Wood ทำงานได้ไม่เต็มเงื่อนไขบ่อยครั้ง เส้นโค้งค่าอิงค์มีช่องโหว่ตรง 4 ink (มีแค่ 4 ใบ) คั่นระหว่างกลุ่ม 1-3 ink ที่หนาแน่นกับกลุ่ม 5-6 ink ที่หนักไป และเด็คไม่มีการ์ดแอ็คชั่นประเภทกำจัด/รบกวนคู่แข่งโดยตรงเลย พึ่งพาการปะทะและ Ward เพียงอย่างเดียว\",\n  \"keyMoments\": [\n    \"ข้อมูลที่ให้มามีเฉพาะรายการเด็คและสถิติแพ้ชนะ (0-2) ไม่มี log การเล่นแต่ละเทิร์น จึงไม่สามารถระบุจุดเปลี่ยนเกมจริงได้ ต้องมี replay หรือบันทึกเทิร์นต่อเทิร์นเพิ่มเติม\"\n  ],\n  \"mistakes\": [\n    \"ไม่มีข้อมูลการเล่นจริงรายเทิร์นให้วิเคราะห์ จึงไม่สามารถชี้จุดที่ตัดสินใจผิดพลาดในเกมได้อย่างมีหลักฐาน หากต้องการวิเคราะห์ส่วนนี้ ต้องแนบ log การเล่นหรือลำดับการ์ดที่ใช้ในแต่ละเทิร์นของทั้ง 2 เกม\"\n  ],\n  \"suggestions\": [\n    \"พิจารณาตัดตัวละครที่ไม่ใช่ Hunny และไม่ได้ช่วย synergy โดยตรง เช่น Anna - Little Sister (2 ใบ) และ Morph - Little Imitator (2 ใบ) ออก เพื่อให้เงื่อนไข Stick Together และ Hunny Quest ทำงานได้สม่ำเสมอขึ้น\",\n    \"เพิ่มการ์ดช่วง 4 ink เพื่ออุดช่องโหว่เส้นโค้ง เช่น เพิ่ม Source of the Vine หรือหาตัวละคร 4 ink สาย Hunny/Sapphire-Amethyst มาเสริม แทนที่จะกระโดดจาก 3 ink ไป 5 ink ตรง ๆ\",\n    \"ใส่การ์ดแอ็คชั่นหรือไอเทมที่กำจัด/รบกวนตัวละครคู่แข่งโดยตรง (เช่นการ์ดที่ทำ damage หรือ exert คู่แข่ง) เพราะตอนนี้เด็คไม่มีเครื่องมือกำจัดเลยนอกจากปะทะ\",\n    \"Winnie the Pooh & Piglet - Hunny Mages (Shift 3, MAGICAL MIX) ได้ประโยชน์จากจำนวนอิงค์ต่างชน",
+            "date": "2026-09-13"
+          }
         }
       ]
     },
@@ -516,7 +524,94 @@
       },
       "issues": [],
       "verdicts": [],
-      "games": [],
+      "games": [
+        {
+          "date": "2026-09-13",
+          "opponent": "(ไม่ระบุ)",
+          "result": "แพ้",
+          "myLore": 0,
+          "oppLore": 0,
+          "deckVersion": "Beast Belle Boo",
+          "deck": [
+            {
+              "qty": 4,
+              "name": "Antonio Madrigal - Animal Doctor"
+            },
+            {
+              "qty": 4,
+              "name": "Beast - Fierce Defender"
+            },
+            {
+              "qty": 4,
+              "name": "Beast - Snowfield Troublemaker"
+            },
+            {
+              "qty": 3,
+              "name": "Belle & Beast - Certain as the Sun"
+            },
+            {
+              "qty": 4,
+              "name": "Belle - Always Reading"
+            },
+            {
+              "qty": 4,
+              "name": "Belle - Snowfield Strategist"
+            },
+            {
+              "qty": 4,
+              "name": "Boo - Energetic Child"
+            },
+            {
+              "qty": 2,
+              "name": "Hana's Inkcaster"
+            },
+            {
+              "qty": 3,
+              "name": "Ichabod Crane - Scared Out of His Mind"
+            },
+            {
+              "qty": 3,
+              "name": "Inkrunner"
+            },
+            {
+              "qty": 4,
+              "name": "Kuzco - Picky Customer"
+            },
+            {
+              "qty": 2,
+              "name": "Someone Will Lose His Head"
+            },
+            {
+              "qty": 3,
+              "name": "Sulley - Strategic Scarer"
+            },
+            {
+              "qty": 4,
+              "name": "Yzma - Choosy Customer"
+            },
+            {
+              "qty": 2,
+              "name": "Iduna - Alarmed Queen"
+            },
+            {
+              "qty": 2,
+              "name": "What Else Can I Do?"
+            },
+            {
+              "qty": 2,
+              "name": "Marching Off to Battle"
+            },
+            {
+              "qty": 4,
+              "name": "Dash Parr - Dodgeball Dynamo"
+            },
+            {
+              "qty": 2,
+              "name": "Minnie Mouse - Practical Traveler"
+            }
+          ]
+        }
+      ],
       "overallAnalysis": null,
       "deckHistory": []
     }
