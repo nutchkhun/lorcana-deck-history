@@ -162,6 +162,14 @@
         },
         {
           "date": "2026-09-13",
+          "opponent": "(ไม่ระบุ)",
+          "result": "แพ้",
+          "myLore": 0,
+          "oppLore": 0,
+          "deckVersion": "v1 ต้นฉบับ"
+        },
+        {
+          "date": "2026-09-13",
           "opponent": "Amber \"Smooth the Way\" Ramp",
           "oppDetail": "Grandmother Willow, Elinor - Renowned Diplomat, White Rabbit, Mickey Mouse, Rapunzel — เด็คเน้นลด cost ตัวละครแล้วปั๊ม lore ต่อเนื่อง",
           "result": "แพ้",
