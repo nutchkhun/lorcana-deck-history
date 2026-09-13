@@ -111,15 +111,7 @@
             "type": "Location"
           }
         ],
-        "version": "v1 ต้นฉบับ",
-        "analysis": {
-          "summary": "",
-          "keyMoments": [],
-          "mistakes": [],
-          "suggestions": [],
-          "verdict": "",
-          "date": "2026-09-13"
-        }
+        "version": "v1 ต้นฉบับ"
       },
       "issues": [
         "Source of the Vine แทบไร้ผล — คู่แข่งเลือก \"Pay 1 ink\" เกือบทุกครั้ง รวมกันเกิน 10 ครั้งจาก 2 เกม ได้ลอร์กลับมาแค่ 3 ครั้ง",
@@ -160,6 +152,14 @@
         }
       ],
       "games": [
+        {
+          "date": "2026-09-13",
+          "opponent": "(ไม่ระบุ)",
+          "result": "แพ้",
+          "myLore": 0,
+          "oppLore": 0,
+          "deckVersion": "v1 ต้นฉบับ"
+        },
         {
           "date": "2026-09-13",
           "opponent": "Amber \"Smooth the Way\" Ramp",
@@ -511,15 +511,7 @@
               "type": "Location"
             }
           ],
-          "date": "2026-09-12",
-          "analysis": {
-            "summary": "",
-            "keyMoments": [],
-            "mistakes": [],
-            "suggestions": [],
-            "verdict": "",
-            "date": "2026-09-13"
-          }
+          "date": "2026-09-12"
         }
       ]
     },
