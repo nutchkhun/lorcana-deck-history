@@ -154,6 +154,30 @@
       "games": [
         {
           "date": "2026-09-13",
+          "opponent": "(ไม่ระบุ)",
+          "result": "แพ้",
+          "myLore": 0,
+          "oppLore": 0,
+          "deckVersion": "v1 ต้นฉบับ"
+        },
+        {
+          "date": "2026-09-13",
+          "opponent": "(ไม่ระบุ)",
+          "result": "แพ้",
+          "myLore": 0,
+          "oppLore": 0,
+          "deckVersion": "v1 ต้นฉบับ"
+        },
+        {
+          "date": "2026-09-13",
+          "opponent": "(ไม่ระบุ)",
+          "result": "แพ้",
+          "myLore": 0,
+          "oppLore": 0,
+          "deckVersion": "v1 ต้นฉบับ"
+        },
+        {
+          "date": "2026-09-13",
           "opponent": "Amber \"Smooth the Way\" Ramp",
           "oppDetail": "Grandmother Willow, Elinor - Renowned Diplomat, White Rabbit, Mickey Mouse, Rapunzel — เด็คเน้นลด cost ตัวละครแล้วปั๊ม lore ต่อเนื่อง",
           "result": "แพ้",
@@ -390,7 +414,29 @@
           }
         }
       ],
-      "overallAnalysis": null,
+      "overallAnalysis": {
+        "summary": "แพ้ทั้ง 3 เกม แต่มีรายละเอียดให้วิเคราะห์จริงแค่ 2 เกม (เกมแรกไม่มีข้อมูลเทิร์น/การ์ด) เกมที่มีข้อมูลทั้งสองแพ้ให้เด็คที่มี removal/challenge ต่อเนื่อง (Elinor ของฝั่ง Amber Ramp, Violet Parr/Good Aim ของฝั่ง Incredibles) ซึ่งตัดตัว payoff หลักของ Hunny Tribal อย่าง Winnie the Pooh - Hunny Archmage, Piglet และ Eeyore ออกจากบอร์ดซ้ำๆ ขณะที่เด็คไม่มีการ์ด removal กลับคืนเลย ต้องพึ่งเควสสะสมล้วนๆ จึงตามหลังตลอดเกมทั้งสองแมตช์",
+        "keyMoments": [
+          "T7 (vs Amber Ramp): Elinor ชาเลนจ์แบนิช Winnie the Pooh - Hunny Archmage ทั้งที่เพิ่งทำ lore ไป 3 แต้ม เสียตัว payoff หลักตั้งแต่ต้นเกม",
+          "T13 (vs Incredibles/Lilo & Stitch): Eeyore's Hunny Tactics บัฟ Pooh Archmage แล้วเควสรวม 3 ตัวได้ +6 lore (5→9) เป็นจุดพีคเดียวที่ฝั่งเราขึ้นนำในทั้ง 2 เกม",
+          "T14 (vs Incredibles/Lilo & Stitch): คู่แข่งกวาดบอร์ดทั้งเทิร์น แบนิช Pooh Archmage, Eeyore, Will o' the Wisp 2 ครั้ง ล้าง board state ที่เพิ่งสร้างจาก T13 หมดทันที",
+          "T15 (vs Amber Ramp): เควสรัว 5 ตัวติดต่อกัน (15→20) จบเกมให้คู่แข่งชนะ ขณะที่ Siphon โดนเลือก \"Pay 1 ink\" ทุกครั้งติดต่อกัน 4 รอบ ไม่ได้ผลอะไรเลย"
+        ],
+        "mistakes": [
+          "มัลลิแกนเกม Amber Ramp ทิ้ง What Else Can I Do?, Translation Collar, Lumpy - Hunny Druid โดยประเมินเองว่าผิดพลาด — เด็คไม่มี removal อื่นเลย ควรเก็บ Translation Collar ไว้รับมือ ward/threat แทนที่จะทิ้งง่ายๆ",
+          "มัลลิแกนเกม Incredibles ทิ้งไป 4 ใบ (Christopher Robin - Hunny Sage, Piglet, Boo, Winnie the Pooh - Hunny Wizard) โดยประเมินเองว่าไม่แน่ใจ — สะท้อนว่าไม่มีเกณฑ์ชัดว่ามือแบบไหนควรเก็บ/ทิ้ง ควรตั้งเกณฑ์ เช่น ต้องมี 1-2 drop อย่างน้อย 2 ใบ + Christopher Robin หรือ Pocahontas อย่างใดอย่างหนึ่ง",
+          "ปล่อยให้ Christopher Robin - Hunny Sage (payoff 6-cost) ค้างมือถึงเทิร์น 16 ทั้ง 2 เกมโดยไม่มีวิธีดึงมาเร็วขึ้นเลย ทำให้ synergy ของเด็คไม่ทันเกม",
+          "ใช้ Siphon ซ้ำในสถานการณ์ T15 (vs Amber Ramp) ที่คู่แข่งมี ink เหลือเลือก \"Pay 1 ink\" ได้ตลอด — เลือกใช้ 4 ครั้งติดโดยไม่ได้ผล ควรเช็คสถานะ ink คู่แข่งก่อนเล่นการ์ดนี้"
+        ],
+        "suggestions": [
+          "ตัด Source of the Vine ลงอย่างน้อย 2 ใบ เพราะข้อมูลจริงคือคู่แข่งเลือก \"Pay 1 ink\" รวมกันเกิน 10 ครั้งจาก 2 เกม ได้ lore คืนจริงแค่ 3 ครั้ง ไม่คุ้มสล็อต",
+          "เพิ่มการ์ด removal เข้าเด็ค (bounce หรือ damage จากสี Amethyst/Sapphire) เพราะปัจจุบันเด็คไม่มี removal เลย ต้องพึ่ง combat ล้วนๆ ทำให้ตัว value ของคู่แข่งอย่าง Violet Parr, Elinor, Angel - Experiment 624 อยู่รอดและฟาร์ม lore ต่อเนื่องได้ตลอดเกม",
+          "ลด Christopher Robin - Hunny Sage จาก 4 ใบเหลือ 2-3 ใบ หรือเพิ่มการ์ดดึงไพ่ เพื่อไม่ให้ payoff 6-cost นี้ค้างมือถึงเทิร์น 16 แบบที่เกิดขึ้นทั้ง 2 เกม",
+          "ตั้งเกณฑ์มัลลิแกนชัดเจนก่อนเล่นเกมถัดไป โดยเฉพาะห้ามทิ้ง Translation Collar เว้นแต่มือมี removal ทดแทนอยู่แล้ว เนื่องจากเป็นเครื่องมือป้องกัน ward เพียงชิ้นเดียวในเด็ค"
+        ],
+        "verdict": "เด็คไม่มี removal เลยจึงหยุด value ของคู่แข่งไม่ได้ และปล่อยให้ตัว payoff หลัก (Winnie the Pooh - Hunny Archmage, Eeyore, Piglet) โดนแบนิชซ้ำๆ จนตามหลังไล่ไม่ทันในทั้งสองเกมที่มีข้อมูล",
+        "date": "2026-09-13"
+      },
       "deckHistory": [
         {
           "version": "v1 ต้นฉบับ",
