@@ -218,7 +218,6 @@
   <button class="active" data-page="deck">Lorcana Deck</button>
   <button data-page="games">Competition history</button>
   <button data-page="cards">คลังการ์ด</button>
-  <button data-page="savedeck">บันทึกเด็ค</button>
   <button data-page="add">บันทึกเกม</button>
   <button data-page="sync">ตั้งค่าซิงก์</button>
 </nav>
@@ -228,9 +227,21 @@
     <h1 id="deckTitle">Lorcana Deck</h1>
     <p class="lead" id="deckLead">กำลังโหลด…</p>
     <div class="analbar">
-      <button class="btn sm" onclick="showPage('savedeck')">แก้ไข / บันทึกเวอร์ชันใหม่</button>
+      <button class="btn sm" id="toggleDeckSave">วางเด็คลิสต์ใหม่</button>
       <button class="btn ghost sm" id="quickSync1">ซิงก์ขึ้น GitHub</button>
       <span id="qs1" class="sublead" style="margin:0"></span>
+    </div>
+    <div id="deckSaveBox" style="display:none">
+      <div class="form">
+        <div><label for="d-cards">วางเด็คลิสต์ — บรรทัดละใบ รูปแบบ <code>4 ชื่อการ์ด</code></label>
+          <textarea id="d-cards" style="min-height:240px" placeholder="4 Piglet - Hunny Mage Apprentice&#10;4 Eeyore - Hunny Scholar&#10;2 Hundred Acre Wood - Hunny Campsite"></textarea></div>
+        <div id="dkPreview"></div>
+        <div class="frow">
+          <button class="btn" id="dSave">บันทึกเป็นเวอร์ชันใหม่</button>
+          <button class="btn ghost" id="dLoadCur">โหลดเด็คปัจจุบันมาแก้</button>
+        </div>
+      </div>
+      <div id="dMsg"></div>
     </div>
     <div class="deck-grid" id="deckGrid"></div>
 
@@ -257,29 +268,6 @@
     <ul class="issues" id="issues"></ul>
     <h2>การ์ด MVP / ตัวที่ควรพิจารณาตัด</h2>
     <div class="scroll-x"><table class="t"><tbody id="verdicts"></tbody></table></div>
-  </section>
-
-  <section class="page" id="savedeck">
-    <h1 id="sdTitle">บันทึกเด็ค</h1>
-    <p class="lead" id="sdLead">บันทึกเด็คเวอร์ชันใหม่แยกจากการบันทึกเกม เวอร์ชันเดิมจะถูกเก็บไว้ในประวัติเพื่อเทียบผล</p>
-    <div class="form">
-      <div class="two">
-        <div><label for="d-name">ชื่อเด็ค</label><input type="text" id="d-name" placeholder="เช่น Hunny Tribal"></div>
-        <div><label for="d-inks">สีอิงค์</label><input type="text" id="d-inks" placeholder="เช่น Amethyst / Sapphire"></div>
-      </div>
-      <div><label for="d-ver">ชื่อเวอร์ชัน</label>
-        <input type="text" id="d-ver" placeholder="เช่น v2 ตัด Source of the Vine เพิ่ม Gopher"></div>
-      <div><label for="d-cards">เด็คลิสต์ — บรรทัดละใบ รูปแบบ <code>4 ชื่อการ์ด</code></label>
-        <textarea id="d-cards" style="min-height:220px" placeholder="4 Piglet - Hunny Mage Apprentice&#10;4 Eeyore - Hunny Scholar&#10;2 Hundred Acre Wood - Hunny Campsite"></textarea></div>
-      <div id="dkPreview"></div>
-      <div class="frow">
-        <button class="btn ghost" id="dCheck">ตรวจสอบเด็ค</button>
-        <button class="btn" id="dSave">บันทึกเป็นเวอร์ชันใหม่</button>
-        <button class="btn ghost" id="dLoadCur">โหลดเด็คปัจจุบันมาแก้</button>
-        <button class="btn ghost" id="quickSync2">ซิงก์ขึ้น GitHub</button>
-      </div>
-    </div>
-    <div id="dMsg"></div>
     <h2>ประวัติเวอร์ชันเด็ค</h2>
     <div class="scroll-x" id="deckHistory"></div>
   </section>
@@ -321,46 +309,19 @@
   </section>
 
   <section class="page" id="add">
-    <h1>บันทึกเกมใหม่</h1>
-    <p class="lead" id="addLead">บันทึกลงเครื่องทันที ใช้ได้แม้ไม่มีเน็ต แล้วค่อยซิงก์ขึ้น GitHub ทีหลัง</p>
+    <h1>บันทึกเกม</h1>
+    <p class="lead" id="addLead">วาง log ของเกมทั้งก้อน ระบบจะอ่านผล ลอร์ เทิร์นจบ มัลลิแกน และไทม์ไลน์ให้อัตโนมัติ</p>
     <div class="form">
-      <div class="three">
-        <div><label for="f-date">วันที่</label><input type="date" id="f-date"></div>
-        <div><label for="f-result">ผล</label>
-          <select id="f-result"><option>แพ้</option><option>ชนะ</option></select></div>
-        <div><label for="f-endturn">เกมจบเทิร์นที่</label><input type="number" id="f-endturn" min="1" placeholder="เช่น 17"></div>
-      </div>
-      <div><label for="f-opp">เด็คคู่ต่อสู้</label>
-        <input type="text" id="f-opp" placeholder="เช่น Ruby/Amber Aggro" list="oppList"><datalist id="oppList"></datalist></div>
-      <div><label for="f-oppdetail">รายละเอียดคู่ต่อสู้ (ไม่บังคับ)</label>
-        <input type="text" id="f-oppdetail" placeholder="การ์ดหลักที่เจอ / แนวทางเล่นของเขา"></div>
-      <div class="two">
-        <div><label for="f-my">ลอร์ของคุณ</label><input type="number" id="f-my" min="0" max="20" value="0"></div>
-        <div><label for="f-opp-lore">ลอร์คู่ต่อสู้</label><input type="number" id="f-opp-lore" min="0" max="20" value="0"></div>
-      </div>
-      <div class="fieldset"><div class="fh">มัลลิแกน</div>
-        <div class="form" style="gap:11px;margin:0;">
-          <div class="two">
-            <div><label for="f-mullcount">ทิ้งกี่ใบ</label><input type="number" id="f-mullcount" min="0" max="7" value="0"></div>
-            <div><label for="f-mullverdict">ประเมินย้อนหลัง</label>
-              <select id="f-mullverdict"><option>ไม่แน่ใจ</option><option>ถูกต้อง</option><option>ผิดพลาด</option></select></div>
-          </div>
-          <div><label for="f-mulldisc">การ์ดที่ทิ้ง</label><input type="text" id="f-mulldisc" placeholder="เช่น What Else Can I Do?, Translation Collar"></div>
-          <div><label for="f-mullnote">บันทึกเพิ่ม (ไม่บังคับ)</label><input type="text" id="f-mullnote" placeholder="เช่น ทิ้งแล้วไม่มี Ward สำรอง"></div>
-        </div></div>
-      <div><label for="f-ver">เด็คที่ใช้</label>
-        <select id="f-ver"></select>
-        <div class="sublead" style="margin:6px 0 0;">เพิ่มเวอร์ชันใหม่ได้ที่แท็บบันทึกเด็ค</div></div>
-      <div><label for="f-tl">ไทม์ไลน์ — บรรทัดละเทิร์น รูปแบบ T7 | opp | ข้อความ (ใส่ ! หลัง opp/me = เทิร์นสำคัญ)</label>
-        <textarea id="f-tl" placeholder="T2 | me | ลง Piglet&#10;T7 | opp! | แบนิช Pooh Archmage"></textarea></div>
+      <div><label for="f-log">วาง log จากเกม</label>
+        <textarea id="f-log" style="min-height:260px" placeholder="[10:18:06 AM] You mulliganed 3 cards: ...&#10;--- Turn 1 ---&#10;[10:18:27 AM] You played Piglet - Hunny Mage Apprentice (cost 1)&#10;..."></textarea></div>
+      <div id="logPreview"></div>
       <div class="frow">
-        <button class="btn" id="saveBtn">บันทึกลงเครื่อง</button>
+        <button class="btn ghost" id="logParse">อ่าน log</button>
+        <button class="btn" id="saveBtn" disabled>บันทึกลงเครื่อง</button>
         <button class="btn ghost" id="quickSync3">ซิงก์ขึ้น GitHub</button>
-        <button class="btn ghost" id="genBtn">ดู JSON อย่างเดียว</button>
       </div>
     </div>
     <div id="saveMsg"></div>
-    <div id="outWrap" style="display:none"><pre id="out"></pre><button class="btn ghost" id="copyBtn">คัดลอก</button></div>
   </section>
 
   <section class="page" id="cards">
@@ -527,8 +488,7 @@ function renderAll(){
   document.getElementById('deckLead').textContent=
     d.name+(d.inks&&d.inks!=='—'?' — '+d.inks:'')+' · เวอร์ชันปัจจุบัน '+(n?verOf(0):(d.version||'—'));
   document.getElementById('gamesLead').textContent=USER+' · บันทึกไว้ '+n+' เกม';
-  document.getElementById('addLead').textContent='บันทึกเกมของ '+USER+' ลงเครื่องทันที แล้วค่อยซิงก์ขึ้น GitHub ทีหลัง';
-  document.getElementById('sdTitle').textContent='บันทึกเด็คของ '+USER;
+  document.getElementById('addLead').textContent='วาง log ของเกมทั้งก้อน ระบบจะอ่านให้อัตโนมัติ · บันทึกในชื่อ '+USER+' · เด็คเวอร์ชัน '+(curDeck().version||'—');
   const pc=pendOf().length;
   document.getElementById('pendingNote').innerHTML=pc
     ?'<div class="warn">มี '+pc+' เกมของ '+esc(USER)+' ที่บันทึกในเครื่องแต่ยังไม่ได้ซิงก์</div>':'';
@@ -539,7 +499,7 @@ function renderAll(){
     st(fx(avg(g,x=>x.myLore)),'ลอร์เฉลี่ยของคุณ')+st(fx(avg(g,x=>x.oppLore)),'ลอร์เฉลี่ยคู่แข่ง');
 
   renderOppStats(g); renderVerStats(g); renderGameList(g); renderOverall();
-  renderDeckAnal(); renderDeckHistory(); fillVerSelect();
+  renderDeckAnal(); renderDeckHistory();
   const qs=document.getElementById('qs1');
   if(qs)qs.innerHTML=dirty()?'<span class="pending">มี '+dirty()+' รายการรอซิงก์</span>':'';
   document.getElementById('deckGrid').innerHTML=(d.cards&&d.cards.length)?deckTable(d.cards)
@@ -551,7 +511,6 @@ function renderAll(){
       U().verdicts.map(v=>'<tr><td>'+cardLink(v.card)+'</td><td>'+esc(v.note)+
       '</td><td><span class="pill '+v.status+'">'+esc(v.label)+'</span></td></tr>').join(''))
     :'<tr><td class="empty">ยังไม่มีข้อมูล</td></tr>';
-  fillDatalists(g);
 }
 function st(num,lbl){return '<div class="stat"><div class="num">'+num+'</div><div class="lbl">'+lbl+'</div></div>';}
 
@@ -673,6 +632,7 @@ function gamePrompt(i){
   const g=allGames(), x=g[i], dk=deckForGame(i);
   let s=HEAD_MATCH+'=== ข้อมูลแมตช์ ===\n';
   s+='ผู้เล่น: '+USER+'\nวันที่: '+x.date+'\nคู่ต่อสู้: '+x.opponent+'\n';
+  if(x.log)s+='หมายเหตุ: ใน log ด้านล่าง ฝั่งของ '+USER+' คือฝั่งที่เล่นการ์ดตรงกับเด็คที่ระบุไว้\n';
   if(x.oppDetail)s+='รายละเอียดคู่ต่อสู้: '+x.oppDetail+'\n';
   s+='ผล: '+x.result+' ('+USER+' '+x.myLore+' — คู่แข่ง '+x.oppLore+' lore)\n';
   if(x.endTurn)s+='เกมจบเทิร์นที่: '+x.endTurn+'\n';
@@ -681,7 +641,8 @@ function gamePrompt(i){
     (x.mull.note?' — '+x.mull.note:'')+'\n';
   s+='\n--- เด็คที่ใช้ ('+dk.deck.reduce((a,c)=>a+c.qty,0)+' ใบ) ---\n';
   s+=dk.deck.map(c=>c.qty+' '+c.name).join('\n');
-  if(x.timeline&&x.timeline.length){s+='\n\n--- ไทม์ไลน์ ---\n';
+  if(x.log){s+='\n\n--- log การแข่งฉบับเต็ม ---\n'+x.log;}
+  else if(x.timeline&&x.timeline.length){s+='\n\n--- ไทม์ไลน์ ---\n';
     s+=x.timeline.map(t=>t.turn+' | '+(t.side==='opp'?'คู่แข่ง':USER)+(t.key?' [สำคัญ]':'')+' | '+t.text).join('\n');}
   return s;
 }
@@ -826,93 +787,100 @@ function delGameAnal(i){
   document.getElementById('gmMsg').innerHTML='<div class="ok">ลบแล้ว</div>';
   renderAll(); renderSync();}
 
-/* ---------- บันทึกเด็ค ---------- */
+/* ---------- บันทึกเด็ค (วางเด็คลิสต์อย่างเดียว) ---------- */
 function parseDeckList(txt){
   return txt.split('\n').map(l=>l.trim()).filter(Boolean).map(function(l){
     const m=l.match(/^(\d+)\s*[xX]?\s+(.+)$/);
     return m?{qty:+m[1],name:m[2].trim()}:{qty:1,name:l};});
 }
 function checkDeck(cards){
-  const total=cards.reduce((a,c)=>a+c.qty,0), warn=[], miss=[];
+  const total=cards.reduce((a,c)=>a+c.qty,0), warn=[], miss=[], inks={};
   if(total<60)warn.push('มี '+total+' ใบ — กติกากำหนดอย่างน้อย 60 ใบ');
   const over=cards.filter(c=>c.qty>4);
   if(over.length)warn.push('เกิน 4 ใบต่อชื่อ: '+over.map(c=>c.name+' ('+c.qty+')').join(', '));
   const names={}; cards.forEach(c=>{names[c.name]=(names[c.name]||0)+1;});
   const dup=Object.keys(names).filter(k=>names[k]>1);
   if(dup.length)warn.push('ชื่อซ้ำหลายบรรทัด: '+dup.join(', '));
-  const inks={};
   cards.forEach(function(c){const f=findCard(c.name);
     if(!f)miss.push(c.name); else inks[f[4]]=(inks[f[4]]||0)+c.qty;});
   const inkNames=Object.keys(inks);
-  if(inkNames.length>2)warn.push('มี '+inkNames.length+' สี ('+inkNames.join(', ')+') — ปกติเด็คใช้ได้ 2 สี ยกเว้นมีความสามารถอนุญาต');
+  if(inkNames.length>2)warn.push('มี '+inkNames.length+' สี ('+inkNames.join(', ')+') — ปกติใช้ได้ 2 สี ยกเว้นมีความสามารถอนุญาต เช่น Gather the Party');
   return {total:total,warn:warn,miss:miss,inks:inks};
+}
+function nextVersion(){
+  const list=allDecks(), nums=list.map(function(d){
+    const m=String(d.version||'').match(/v\s*(\d+)/i); return m?+m[1]:0;});
+  return 'v'+((nums.length?Math.max.apply(null,nums):0)+1);
 }
 function renderDeckPreview(){
   const cards=parseDeckList(document.getElementById('d-cards').value);
-  if(!cards.length){document.getElementById('dkPreview').innerHTML='';return null;}
+  const pv=document.getElementById('dkPreview');
+  if(!cards.length){pv.innerHTML='';return null;}
   const r=checkDeck(cards);
   const inkLine=Object.entries(r.inks).sort((a,b)=>b[1]-a[1])
     .map(e=>'<span class="inktag" style="background:var(--'+e[0]+')">'+e[0]+' '+e[1]+'</span>').join(' ');
-  let html='<div class="box"><h3>ตรวจสอบ — รวม '+r.total+' ใบ</h3><div style="margin-bottom:8px">'+inkLine+'</div>';
+  let html='<div class="box"><h3>ตรวจสอบ — รวม '+r.total+' ใบ · จะบันทึกเป็น '+esc(nextVersion())+'</h3>'+
+    '<div style="margin-bottom:8px">'+inkLine+'</div>';
   if(r.miss.length)html+='<div class="warn">ไม่พบในฐานข้อมูลการ์ด '+r.miss.length+' รายการ: '+esc(r.miss.join(', '))+'</div>';
   if(r.warn.length)html+=r.warn.map(w=>'<div class="warn" style="margin-top:6px">'+esc(w)+'</div>').join('');
   if(!r.miss.length&&!r.warn.length)html+='<div class="ok">ผ่านการตรวจสอบเบื้องต้น</div>';
-  html+='</div>';
-  document.getElementById('dkPreview').innerHTML=html;
+  pv.innerHTML=html+'</div>';
   return {cards:cards,r:r};
 }
+document.getElementById('toggleDeckSave').addEventListener('click',function(){
+  const el=document.getElementById('deckSaveBox');
+  const open=el.style.display==='none';
+  el.style.display=open?'block':'none';
+  this.textContent=open?'ปิดกล่องวางเด็ค':'วางเด็คลิสต์ใหม่';
+  if(open)document.getElementById('d-cards').focus();});
 document.getElementById('d-cards').addEventListener('input',function(){
-  if(document.getElementById('dkPreview').innerHTML)renderDeckPreview();});
-document.getElementById('dCheck').addEventListener('click',renderDeckPreview);
+  if(document.getElementById('dkPreview').innerHTML)renderDeckPreview();
+  else if(this.value.trim())renderDeckPreview();});
 document.getElementById('dLoadCur').addEventListener('click',function(){
   const d=curDeck();
-  document.getElementById('d-name').value=d.name||'';
-  document.getElementById('d-inks').value=d.inks||'';
-  document.getElementById('d-ver').value='';
   document.getElementById('d-cards').value=(d.cards||[]).map(c=>c.qty+' '+c.name).join('\n');
-  renderDeckPreview();
-  document.getElementById('dMsg').innerHTML='<div class="ok">โหลดเด็ค '+esc(d.version||'')+' มาแล้ว — ตั้งชื่อเวอร์ชันใหม่ก่อนบันทึก</div>';});
+  renderDeckPreview();});
 document.getElementById('dSave').addEventListener('click',function(){
-  const ver=document.getElementById('d-ver').value.trim();
   const cards=parseDeckList(document.getElementById('d-cards').value);
   const msg=document.getElementById('dMsg');
-  if(!ver){msg.innerHTML='<div class="err">ตั้งชื่อเวอร์ชันก่อน</div>';return;}
   if(!cards.length){msg.innerHTML='<div class="err">ยังไม่ได้วางเด็คลิสต์</div>';return;}
-  if(deckByVersion(ver)&&!confirm('มีเวอร์ชัน "'+ver+'" อยู่แล้ว ต้องการบันทึกทับไหม'))return;
-  const d=curDeck();
-  const obj={version:ver,
-    name:document.getElementById('d-name').value.trim()||d.name||'(ไม่ตั้งชื่อ)',
-    inks:document.getElementById('d-inks').value.trim()||d.inks||'—',
+  const r=checkDeck(cards), prev=curDeck();
+  const inkNames=Object.entries(r.inks).sort((a,b)=>b[1]-a[1]).map(e=>e[0]);
+  const obj={version:nextVersion(),
+    name:prev.name&&prev.name!=='(ยังไม่ตั้งชื่อเด็ค)'?prev.name:(USER+' deck'),
+    inks:inkNames.length?inkNames.join(' / '):'—',
     cards:cards, date:new Date().toISOString().slice(0,10)};
-  pendDecks[USER]=(pendDecks[USER]||[]).filter(x=>x.version!==ver);
+  pendDecks[USER]=(pendDecks[USER]||[]).filter(x=>x.version!==obj.version);
   pendDecks[USER].unshift(obj);
   localStorage.setItem(LS_DECKS,JSON.stringify(pendDecks));
-  renderDeckPreview();
-  msg.innerHTML='<div class="ok">บันทึกเวอร์ชัน '+esc(ver)+' แล้ว ('+cards.reduce((a,c)=>a+c.qty,0)+' ใบ) — อย่าลืมซิงก์</div>';
+  msg.innerHTML='<div class="ok">บันทึก '+esc(obj.version)+' แล้ว ('+r.total+' ใบ · '+esc(obj.inks)+') — อย่าลืมซิงก์</div>';
+  document.getElementById('d-cards').value='';
+  document.getElementById('dkPreview').innerHTML='';
   renderAll(); renderSync();});
 
 function renderDeckHistory(){
   const list=allDecks();
   document.getElementById('deckHistory').innerHTML=list.length?
-    ('<table class="t"><tr><th>เวอร์ชัน</th><th>ชื่อเด็ค</th><th>สี</th><th>จำนวน</th><th>บันทึกเมื่อ</th><th></th></tr>'+
+    ('<table class="t"><tr><th>เวอร์ชัน</th><th>สี</th><th>จำนวน</th><th>บันทึกเมื่อ</th><th></th></tr>'+
     list.map(function(d,i){
       const isPend=(pendDecks[USER]||[]).some(x=>x.version===d.version);
       return '<tr><td>'+esc(d.version)+(i===0?' <span class="tagv">ปัจจุบัน</span>':'')+
         (isPend?' <span class="pending">ยังไม่ซิงก์</span>':'')+'</td>'+
-        '<td>'+esc(d.name||'-')+'</td><td class="n">'+esc(d.inks||'-')+'</td>'+
+        '<td class="n">'+esc(d.inks||'-')+'</td>'+
         '<td class="n">'+(d.cards||[]).reduce((a,c)=>a+c.qty,0)+'</td>'+
         '<td class="n">'+esc(d.date||'-')+'</td>'+
-        '<td class="n"><button class="linkbtn" onclick="loadVer(\''+esc(d.version).replace(/'/g,"\\'")+'\')">แก้ไข</button></td></tr>';
+        '<td class="n"><button class="linkbtn" onclick="loadVer(\''+esc(d.version).replace(/'/g,"\\'")+'\')">ดู/แก้</button></td></tr>';
     }).join('')+'</table>')
     :'<div class="empty">ยังไม่มีเวอร์ชันเด็ค</div>';
 }
 function loadVer(v){
   const d=deckByVersion(v); if(!d)return;
-  document.getElementById('d-name').value=d.name||'';
-  document.getElementById('d-inks').value=d.inks||'';
-  document.getElementById('d-ver').value=d.version;
+  const box=document.getElementById('deckSaveBox');
+  box.style.display='block';
+  document.getElementById('toggleDeckSave').textContent='ปิดกล่องวางเด็ค';
   document.getElementById('d-cards').value=(d.cards||[]).map(c=>c.qty+' '+c.name).join('\n');
-  renderDeckPreview(); showPage('savedeck'); }
+  renderDeckPreview();
+  box.scrollIntoView({behavior:'smooth',block:'start'});}
 
 /* ---------- วิเคราะห์เด็ค ---------- */
 function renderDeckAnal(){
@@ -938,19 +906,7 @@ document.getElementById('delDeckAnal').addEventListener('click',function(){
   document.getElementById('dkMsg').innerHTML='<div class="ok">ลบแล้ว</div>';
   renderDeckAnal(); renderSync();});
 
-function fillVerSelect(){
-  const list=allDecks(), sel=document.getElementById('f-ver');
-  const keep=sel.value;
-  sel.innerHTML=list.length?list.map(d=>'<option value="'+esc(d.version)+'">'+esc(d.version)+
-    ' ('+(d.cards||[]).reduce((a,c)=>a+c.qty,0)+' ใบ)</option>').join('')
-    :'<option value="">— ยังไม่มีเด็ค —</option>';
-  if(keep&&list.some(d=>d.version===keep))sel.value=keep;
-}
 
-function fillDatalists(g){
-  const opps=[...new Set(g.map(x=>x.opponent).filter(Boolean))];
-  document.getElementById('oppList').innerHTML=opps.map(o=>'<option value="'+esc(o)+'">').join('');
-}
 
 /* ---------- คลังการ์ด ---------- */
 const SETS={'9':'Fabled','10':'Whispers in the Well','11':'Winterspell','12':'Wilds Unknown','13':'Attack of the Vine!'};
@@ -1021,45 +977,131 @@ document.getElementById('clearF').addEventListener('click',function(){
   ['ink','set','type','rar'].forEach(k=>F[k].clear());
   document.getElementById('q').value=''; syncChips(); applyCards();});
 
-/* ---------- ฟอร์ม ---------- */
-document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
-function buildGame(){
-  const tl=document.getElementById('f-tl').value.split('\n').map(l=>l.trim()).filter(Boolean)
-    .map(function(l){const p=l.split('|').map(s=>s.trim()); if(p.length<3)return null;
-      const key=p[1].endsWith('!');
-      const o={turn:p[0],side:p[1].replace('!','').toLowerCase()==='opp'?'opp':'me'};
-      if(key)o.key=true; o.text=p.slice(2).join(' | '); return o;}).filter(Boolean);
-  const obj={date:document.getElementById('f-date').value,
-    opponent:document.getElementById('f-opp').value||'(ไม่ระบุ)',
-    result:document.getElementById('f-result').value,
-    myLore:+document.getElementById('f-my').value,
-    oppLore:+document.getElementById('f-opp-lore').value};
-  const et=document.getElementById('f-endturn').value; if(et)obj.endTurn=+et;
-  const od=document.getElementById('f-oppdetail').value; if(od)obj.oppDetail=od;
-  const mc=+document.getElementById('f-mullcount').value;
-  const md=document.getElementById('f-mulldisc').value.trim();
-  const mn=document.getElementById('f-mullnote').value.trim();
-  if(mc>0||md||mn){obj.mull={count:mc,verdict:document.getElementById('f-mullverdict').value};
-    if(md)obj.mull.discarded=md; if(mn)obj.mull.note=mn;}
-  const ver=document.getElementById('f-ver').value.trim(); if(ver)obj.deckVersion=ver;
-  if(tl.length)obj.timeline=tl;
-  return obj;
+/* ---------- อ่าน log เกม ---------- */
+function deckNameSet(){
+  const s=new Set();
+  (curDeck().cards||[]).forEach(c=>s.add(c.name.toLowerCase()));
+  return s;
 }
+function parseLog(raw){
+  const lines=String(raw||'').split('\n').map(l=>l.trim()).filter(Boolean);
+  if(!lines.length)return null;
+  const deckNames=deckNameSet();
+  const ev=[]; let turn=0;
+  lines.forEach(function(l){
+    const t=l.match(/^---\s*Turn\s+(\d+)\s*---$/i);
+    if(t){turn=+t[1];return;}
+    const m=l.match(/^\[[^\]]*\]\s*(.*)$/);
+    ev.push({turn:turn,text:(m?m[1]:l).trim()});
+  });
+  const all=ev.map(e=>e.text).join('\n');
+  let ME,OPP,style;
+  if(/^(Your |You )/m.test(all)){ME='You';OPP='Opponent';style='you';}
+  else{
+    style='pN';
+    const p1=[],p2=[];
+    ev.forEach(function(e){
+      const m=e.text.match(/^(Player [12]) (?:played|quested with|sang|shifted) (.+?)(?: \(|$| with | onto )/);
+      if(m)(m[1]==='Player 1'?p1:p2).push(m[2].trim());});
+    const sc=a=>a.filter(n=>deckNames.has(n.toLowerCase())).length;
+    ME=sc(p1)>=sc(p2)?'Player 1':'Player 2';
+    OPP=ME==='Player 1'?'Player 2':'Player 1';
+  }
+  const isMe=s=>s===ME||(style==='you'&&(s==='You'||s==='Your'));
+  let mull=null;
+  ev.forEach(function(e){
+    const m=e.text.match(/^(You|Player [12]) mulliganed (\d+) cards?: (.+?)\. Drew:/);
+    if(m&&isMe(m[1]))mull={count:+m[2],discarded:m[3].trim(),verdict:'ไม่แน่ใจ'};
+    const k=e.text.match(/^(You|Player [12]) kept (?:their|your) hand/);
+    if(k&&isMe(k[1]))mull={count:0,discarded:'เก็บมือเดิม',verdict:'ไม่แน่ใจ'};});
+  let myLore=0,oppLore=0,winner=null;
+  ev.forEach(function(e){
+    const q=e.text.match(/^(You|Player [12]) quested with .+?\(\+\d+ \[LORE\], \d+ -> (\d+)\)/);
+    if(q){if(isMe(q[1]))myLore=Math.max(myLore,+q[2]);else oppLore=Math.max(oppLore,+q[2]);}
+    const w=e.text.match(/^(You|Opponent|Player [12]) won with (\d+) \[LORE\]/);
+    if(w){winner=w[1]; if(isMe(w[1]))myLore=+w[2]; else oppLore=+w[2];}});
+  const result=winner?(isMe(winner)?'ชนะ':'แพ้'):(myLore>oppLore?'ชนะ':'แพ้');
+  const oppCards={};
+  ev.forEach(function(e){
+    const m=e.text.match(/^(You|Opponent|Player [12]) (?:played|quested with|challenged .+? with) (.+?)(?: \(|$)/);
+    if(m&&!isMe(m[1])){const n=m[2].trim(); oppCards[n]=(oppCards[n]||0)+1;}});
+  const topOpp=Object.entries(oppCards).sort((a,b)=>b[1]-a[1]).slice(0,4).map(x=>x[0]);
+  const byTurn={};
+  ev.forEach(function(e){
+    if(!e.turn)return;
+    const T=e.text; let side=null,txt=null,key=false,m;
+    if(m=T.match(/^(You|Opponent|Player [12]) played (.+?) \(cost/)){side=m[1];txt='ลง '+m[2];}
+    else if(m=T.match(/^(You|Opponent|Player [12]) quested with (.+?) \(\+(\d+) \[LORE\], (\d+) -> (\d+)\)/)){
+      side=m[1];txt='เควส '+m[2]+' (+'+m[3]+' → '+m[5]+')'; if(+m[3]>=3)key=true;}
+    else if(m=T.match(/^(You|Opponent|Player [12]) challenged (.+?) with (.+?)(?: \||$)/)){
+      side=m[1];txt='ชาเลนจ์ '+m[2]+' ด้วย '+m[3];}
+    else if(m=T.match(/^(You|Opponent|Player [12]) sang (.+?) with (.+)$/)){
+      side=m[1];txt='ร้อง '+m[2]+' ด้วย '+m[3];key=true;}
+    else if(m=T.match(/^(You|Opponent|Player [12]) shifted (.+?) onto (.+?) \(Shift/)){
+      side=m[1];txt='Shift '+m[2]+' ทับ '+m[3];}
+    else if(m=T.match(/^(.+?) was banished$/)){side=null;txt='แบนิช '+m[1];key=true;}
+    else if(m=T.match(/^(You|Opponent|Player [12]) won with (\d+) \[LORE\]/)){
+      side=m[1];txt='ชนะที่ '+m[2]+' lore';key=true;}
+    if(!txt)return;
+    const k=e.turn;
+    byTurn[k]=byTurn[k]||{turn:k,me:[],opp:[],key:false,loose:[]};
+    if(key)byTurn[k].key=true;
+    if(side===null)byTurn[k].loose.push(txt);
+    else if(isMe(side))byTurn[k].me.push(txt);
+    else byTurn[k].opp.push(txt);});
+  const timeline=[];
+  Object.values(byTurn).sort((a,b)=>a.turn-b.turn).forEach(function(t){
+    const loose=t.loose.length?' · '+t.loose.join(' · '):'';
+    if(t.me.length){const o={turn:'T'+t.turn,side:'me',text:t.me.join(' · ')+(t.opp.length?'':loose)};
+      if(t.key&&!t.opp.length)o.key=true; timeline.push(o);}
+    if(t.opp.length){const o={turn:'T'+t.turn,side:'opp',text:t.opp.join(' · ')+loose};
+      if(t.key)o.key=true; timeline.push(o);}
+    if(!t.me.length&&!t.opp.length&&t.loose.length){
+      const o={turn:'T'+t.turn,side:'opp',text:t.loose.join(' · ')}; if(t.key)o.key=true; timeline.push(o);}});
+  const endTurn=Math.max.apply(null,[0].concat(ev.map(e=>e.turn)));
+  const obj={date:new Date().toISOString().slice(0,10),
+    opponent:topOpp.length?topOpp.slice(0,2).join(' / '):'(ไม่ระบุ)',
+    result:result,myLore:myLore,oppLore:oppLore};
+  if(endTurn)obj.endTurn=endTurn;
+  if(topOpp.length)obj.oppDetail='การ์ดที่เจอบ่อย: '+topOpp.join(', ');
+  if(mull)obj.mull=mull;
+  const cv=curDeck().version; if(cv)obj.deckVersion=cv;
+  if(timeline.length)obj.timeline=timeline;
+  obj.log=String(raw).trim();
+  return {game:obj,meLabel:ME,style:style};
+}
+let parsedGame=null;
+function doParse(){
+  const r=parseLog(document.getElementById('f-log').value);
+  const pv=document.getElementById('logPreview'), btn=document.getElementById('saveBtn');
+  if(!r){pv.innerHTML='<div class="err">ยังไม่ได้วาง log</div>'; btn.disabled=true; parsedGame=null; return;}
+  parsedGame=r.game; btn.disabled=false;
+  const g=r.game, win=g.result==='ชนะ';
+  pv.innerHTML='<div class="box"><h3>อ่าน log แล้ว</h3>'+
+    '<div class="sublead" style="margin:0 0 8px">ระบุฝั่งคุณเป็น <b>'+esc(r.meLabel)+'</b> จากการจับคู่ชื่อการ์ดกับเด็คปัจจุบัน</div>'+
+    '<table class="t">'+
+    '<tr><th>ผล</th><td class="'+(win?'w':'l')+'">'+esc(g.result)+'</td></tr>'+
+    '<tr><th>ลอร์</th><td>'+g.myLore+' — '+g.oppLore+'</td></tr>'+
+    '<tr><th>เกมจบเทิร์น</th><td>'+(g.endTurn||'—')+'</td></tr>'+
+    '<tr><th>คู่ต่อสู้</th><td>'+esc(g.opponent)+'</td></tr>'+
+    '<tr><th>มัลลิแกน</th><td>'+(g.mull?('ทิ้ง '+g.mull.count+' ใบ — '+esc(g.mull.discarded)):'—')+'</td></tr>'+
+    '<tr><th>ไทม์ไลน์</th><td>'+(g.timeline?g.timeline.length:0)+' รายการ</td></tr>'+
+    '<tr><th>เวอร์ชันเด็ค</th><td>'+esc(g.deckVersion||'—')+'</td></tr></table>'+
+    (g.myLore===0&&g.oppLore===0?'<div class="warn" style="margin-top:8px">อ่านลอร์ไม่ได้เลย — log อาจไม่ครบหรือรูปแบบต่างจากที่รองรับ</div>':'')+
+    '</div>';
+}
+document.getElementById('logParse').addEventListener('click',doParse);
+document.getElementById('f-log').addEventListener('input',function(){
+  if(document.getElementById('logPreview').innerHTML)doParse();});
 document.getElementById('saveBtn').addEventListener('click',function(){
-  const o=buildGame();
-  if(!o.date){document.getElementById('saveMsg').innerHTML='<div class="err">ใส่วันที่ด้วย</div>';return;}
-  pending[USER]=pending[USER]||[]; pending[USER].unshift(o);
+  if(!parsedGame){doParse(); if(!parsedGame)return;}
+  pending[USER]=pending[USER]||[]; pending[USER].unshift(parsedGame);
   localStorage.setItem(LS_PENDING,JSON.stringify(pending));
   document.getElementById('saveMsg').innerHTML='<div class="ok">บันทึกเกมของ '+esc(USER)+' แล้ว — รอซิงก์ '+pending[USER].length+' เกม</div>';
-  ['f-opp','f-oppdetail','f-tl','f-mulldisc','f-mullnote','f-endturn'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-my').value=0; document.getElementById('f-opp-lore').value=0;
-  document.getElementById('f-mullcount').value=0;
+  document.getElementById('f-log').value='';
+  document.getElementById('logPreview').innerHTML='';
+  document.getElementById('saveBtn').disabled=true; parsedGame=null;
   renderAll(); renderSync();});
-document.getElementById('genBtn').addEventListener('click',function(){
-  document.getElementById('out').textContent=JSON.stringify(buildGame(),null,2)+',';
-  document.getElementById('outWrap').style.display='block';});
-document.getElementById('copyBtn').addEventListener('click',function(){
-  copyText(document.getElementById('out').textContent,this);});
 
 /* ---------- ซิงก์ด่วนจากหน้าอื่น ---------- */
 function wireQuickSync(){
