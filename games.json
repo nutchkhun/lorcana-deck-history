@@ -387,8 +387,16 @@
             "discarded": "Christopher Robin - Hunny Sage, Piglet, Boo, Winnie the Pooh - Hunny Wizard",
             "verdict": "ไม่แน่ใจ",
             "note": "ทิ้ง Christopher Robin ทำให้ตัว tutor มาช้า แต่มือเดิมก็หนักเกินไป"
-          },
-          "deck": [
+          }
+        }
+      ],
+      "overallAnalysis": null,
+      "deckHistory": [
+        {
+          "version": "v1 ต้นฉบับ",
+          "name": "Hunny Tribal",
+          "inks": "Amethyst / Sapphire",
+          "cards": [
             {
               "qty": 4,
               "name": "Boo - Human Child",
@@ -494,10 +502,10 @@
               "name": "Hundred Acre Wood - Hunny Campsite",
               "type": "Location"
             }
-          ]
+          ],
+          "date": "2026-09-12"
         }
-      ],
-      "overallAnalysis": null
+      ]
     },
     "Nidd": {
       "deck": {
@@ -509,7 +517,8 @@
       "issues": [],
       "verdicts": [],
       "games": [],
-      "overallAnalysis": null
+      "overallAnalysis": null,
+      "deckHistory": []
     }
   }
 }

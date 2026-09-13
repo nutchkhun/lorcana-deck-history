@@ -192,6 +192,7 @@
 <div class="userbar"><span class="ul">ผู้เล่น</span><div id="userBtns"></div></div>
 <nav>
   <button class="active" data-page="deck">เด็ค</button>
+  <button data-page="savedeck">บันทึกเด็ค</button>
   <button data-page="games">ประวัติแข่ง</button>
   <button data-page="add">บันทึกเกมใหม่</button>
   <button data-page="cards">คลังการ์ด</button>
@@ -202,6 +203,22 @@
   <section class="page active" id="deck">
     <h1 id="deckTitle">เด็ค</h1>
     <p class="lead" id="deckLead">กำลังโหลด…</p>
+    <h2>บทวิเคราะห์เด็ค</h2>
+    <p class="sublead">คัดลอกเด็คปัจจุบันไปให้ Claude วิเคราะห์ แล้ววางผลกลับมาเก็บไว้ที่นี่</p>
+    <div class="analbar">
+      <button class="btn sm" id="copyDeck">คัดลอกเด็คส่งให้ Claude</button>
+      <button class="btn ghost sm" id="toggleDeckPaste">วางบทวิเคราะห์</button>
+    </div>
+    <div id="deckPaste" style="display:none">
+      <div class="form">
+        <div><label for="dk-text">วางผลที่ Claude ตอบกลับมา</label><textarea id="dk-text"></textarea></div>
+        <div class="frow"><button class="btn sm" id="saveDeckAnal">บันทึกบทวิเคราะห์</button>
+          <button class="btn ghost sm" id="delDeckAnal">ลบ</button></div>
+      </div>
+      <div id="dkMsg"></div>
+    </div>
+    <div id="deckAnalView"></div>
+
     <h2>ผลแยกตามเวอร์ชันเด็ค</h2>
     <p class="sublead">ตั้งชื่อเวอร์ชันตอนบันทึกเกม เพื่อดูว่าปรับแล้วดีขึ้นจริงไหม</p>
     <div id="verStats"></div>
@@ -212,6 +229,31 @@
     <ul class="issues" id="issues"></ul>
     <h2>การ์ด MVP / ตัวที่ควรพิจารณาตัด</h2>
     <table class="t"><tbody id="verdicts"></tbody></table>
+  </section>
+
+
+  <section class="page" id="savedeck">
+    <h1 id="sdTitle">บันทึกเด็ค</h1>
+    <p class="lead" id="sdLead">บันทึกเด็คเวอร์ชันใหม่แยกจากการบันทึกเกม เวอร์ชันเดิมจะถูกเก็บไว้ในประวัติเพื่อเทียบผล</p>
+    <div class="form">
+      <div class="two">
+        <div><label for="d-name">ชื่อเด็ค</label><input type="text" id="d-name" placeholder="เช่น Hunny Tribal"></div>
+        <div><label for="d-inks">สีอิงค์</label><input type="text" id="d-inks" placeholder="เช่น Amethyst / Sapphire"></div>
+      </div>
+      <div><label for="d-ver">ชื่อเวอร์ชัน</label>
+        <input type="text" id="d-ver" placeholder="เช่น v2 ตัด Source of the Vine เพิ่ม Gopher"></div>
+      <div><label for="d-cards">เด็คลิสต์ — บรรทัดละใบ รูปแบบ <code>4 ชื่อการ์ด</code></label>
+        <textarea id="d-cards" style="min-height:220px" placeholder="4 Piglet - Hunny Mage Apprentice&#10;4 Eeyore - Hunny Scholar&#10;2 Hundred Acre Wood - Hunny Campsite"></textarea></div>
+      <div id="dkPreview"></div>
+      <div class="frow">
+        <button class="btn ghost" id="dCheck">ตรวจสอบเด็ค</button>
+        <button class="btn" id="dSave">บันทึกเป็นเวอร์ชันใหม่</button>
+        <button class="btn ghost" id="dLoadCur">โหลดเด็คปัจจุบันมาแก้</button>
+      </div>
+    </div>
+    <div id="dMsg"></div>
+    <h2>ประวัติเวอร์ชันเด็ค</h2>
+    <div id="deckHistory"></div>
   </section>
 
   <section class="page" id="games">
@@ -284,13 +326,9 @@
           <div><label for="f-mulldisc">การ์ดที่ทิ้ง</label><input type="text" id="f-mulldisc" placeholder="เช่น What Else Can I Do?, Translation Collar"></div>
           <div><label for="f-mullnote">บันทึกเพิ่ม (ไม่บังคับ)</label><input type="text" id="f-mullnote" placeholder="เช่น ทิ้งแล้วไม่มี Ward สำรอง"></div>
         </div></div>
-      <div class="fieldset"><div class="fh">เด็คที่ใช้</div>
-        <div class="form" style="gap:11px;margin:0;">
-          <div><label for="f-ver">ชื่อเวอร์ชัน (เว้นว่าง = ใช้เวอร์ชันเดิมจากเกมก่อนหน้า)</label>
-            <input type="text" id="f-ver" placeholder="เช่น v2 ตัด Source of the Vine" list="verList"><datalist id="verList"></datalist></div>
-          <div><label for="f-deck">เด็คลิสต์ — วางที่นี่ถ้าเปลี่ยนการ์ด (เว้นว่าง = ใช้เด็คเดิม)</label>
-            <textarea id="f-deck" placeholder="4 Piglet - Hunny Mage Apprentice&#10;4 Eeyore - Hunny Scholar"></textarea></div>
-        </div></div>
+      <div><label for="f-ver">เด็คที่ใช้</label>
+        <select id="f-ver"></select>
+        <div class="sublead" style="margin:6px 0 0;">เพิ่มเวอร์ชันใหม่ได้ที่แท็บบันทึกเด็ค</div></div>
       <div><label for="f-tl">ไทม์ไลน์ — บรรทัดละเทิร์น รูปแบบ T7 | opp | ข้อความ (ใส่ ! หลัง opp/me = เทิร์นสำคัญ)</label>
         <textarea id="f-tl" placeholder="T2 | me | ลง Piglet&#10;T7 | opp! | แบนิช Pooh Archmage"></textarea></div>
       <div class="frow">
@@ -385,8 +423,8 @@ function thaiType(s){return (s||'').split('/').map(x=>T_TYPE[x]||x).join(' / ');
 function kwNotes(t){if(!t)return'';const h=KW.filter(k=>k[0].test(t));
   return h.length?h.map(k=>'<b>'+k[1]+'</b> — '+k[2]).join('<br>'):'';}
 
-let DATA=null, CARDS=[], IDX={}, pending={}, analyses={}, USER='Nutt';
-const LS_PENDING='hunny_pending_v2', LS_ANAL='hunny_anal', LS_CFG='hunny_cfg', LS_USER='hunny_user';
+let DATA=null, CARDS=[], IDX={}, pending={}, pendDecks={}, analyses={}, USER='Nutt';
+const LS_PENDING='hunny_pending_v2', LS_DECKS='hunny_decks', LS_ANAL='hunny_anal', LS_CFG='hunny_cfg', LS_USER='hunny_user';
 const esc=s=>String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 const avg=(a,f)=>{const v=a.map(f).filter(x=>typeof x==='number'&&!isNaN(x));return v.length?v.reduce((s,x)=>s+x,0)/v.length:null;};
 const fx=(v,d)=>v==null?'—':v.toFixed(d==null?1:d);
@@ -400,6 +438,7 @@ function showPage(id){
 document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 
 pending=JSON.parse(localStorage.getItem(LS_PENDING)||'{}');
+pendDecks=JSON.parse(localStorage.getItem(LS_DECKS)||'{}');
 analyses=JSON.parse(localStorage.getItem(LS_ANAL)||'{}');
 USER=localStorage.getItem(LS_USER)||'Nutt';
 
@@ -429,6 +468,20 @@ function findCard(n){const k=String(n).toLowerCase().trim();
   const b=k.split(' - ')[0];return (b in IDX)?CARDS[IDX[b]]:null;}
 
 const U=()=>DATA.users[USER];
+/* รวมเด็คทุกเวอร์ชัน: ที่รอซิงก์ + ที่อยู่ในไฟล์ + เด็คปัจจุบัน (ใหม่สุดอยู่หน้า) */
+function allDecks(){
+  const out=(pendDecks[USER]||[]).slice();
+  const hist=U().deckHistory||[];
+  out.push.apply(out,hist);
+  const cur=U().deck;
+  if(cur&&cur.cards&&cur.cards.length&&!out.some(d=>d.version===cur.version))
+    out.push({version:cur.version||'v1',name:cur.name,inks:cur.inks,cards:cur.cards,date:cur.date||''});
+  return out;
+}
+function deckByVersion(v){return allDecks().find(d=>d.version===v)||null;}
+function curDeck(){const a=allDecks(); return a.length?a[0]:U().deck;}
+const dKey=v=>USER+'|__deck__|'+v;
+function deckAnalOf(v){const d=deckByVersion(v);return analyses[dKey(v)]||(d&&d.analysis)||null;}
 const pendOf=()=>pending[USER]||[];
 function allGames(){return pendOf().concat(U().games);}
 const gKey=x=>USER+'|'+x.date+'|'+x.opponent;
@@ -439,17 +492,20 @@ function overallOf(){return analyses[OVKEY()]||U().overallAnalysis||null;}
 function verOf(i){const g=allGames();
   for(let j=i;j<g.length;j++){if(g[j].deckVersion)return g[j].deckVersion;}
   return U().deck.version||'ไม่ระบุเวอร์ชัน';}
-function deckForGame(i){const g=allGames();
-  for(let j=i;j<g.length;j++){if(g[j].deck)return{deck:g[j].deck,from:j};}
-  return{deck:U().deck.cards,from:null};}
+function deckForGame(i){
+  const g=allGames(), v=verOf(i), byV=deckByVersion(v);
+  if(byV)return{deck:byV.cards,from:null,ver:v};
+  for(let j=i;j<g.length;j++){if(g[j].deck)return{deck:g[j].deck,from:j,ver:v};}
+  return{deck:curDeck().cards||[],from:null,ver:v};}
 
 function renderAll(){
-  const g=allGames(), wins=g.filter(x=>x.result==='ชนะ').length, n=g.length, d=U().deck;
+  const g=allGames(), wins=g.filter(x=>x.result==='ชนะ').length, n=g.length, d=curDeck();
   document.getElementById('deckTitle').textContent='เด็คของ '+USER;
   document.getElementById('deckLead').textContent=
     d.name+(d.inks&&d.inks!=='—'?' — '+d.inks:'')+' · เวอร์ชันปัจจุบัน '+(n?verOf(0):(d.version||'—'));
   document.getElementById('gamesLead').textContent=USER+' · บันทึกไว้ '+n+' เกม';
   document.getElementById('addLead').textContent='บันทึกเกมของ '+USER+' ลงเครื่องทันที แล้วค่อยซิงก์ขึ้น GitHub ทีหลัง';
+  document.getElementById('sdTitle').textContent='บันทึกเด็คของ '+USER;
   const pc=pendOf().length;
   document.getElementById('pendingNote').innerHTML=pc
     ?'<div class="warn">มี '+pc+' เกมของ '+esc(USER)+' ที่บันทึกในเครื่องแต่ยังไม่ได้ซิงก์</div>':'';
@@ -470,7 +526,8 @@ function renderAll(){
     st('<span class="u">'+cnt('ไม่แน่ใจ')+'</span>','ไม่แน่ใจ');
 
   renderOppStats(g); renderVerStats(g); renderGameList(g); renderOverall();
-  document.getElementById('deckGrid').innerHTML=d.cards.length?deckTable(d.cards)
+  renderDeckAnal(); renderDeckHistory(); fillVerSelect();
+  document.getElementById('deckGrid').innerHTML=(d.cards&&d.cards.length)?deckTable(d.cards)
     :'<div class="empty">ยังไม่มีเด็ค — วางเด็คลิสต์ตอนบันทึกเกมใหม่</div>';
   document.getElementById('issues').innerHTML=U().issues.length
     ?U().issues.map(i=>'<li>'+esc(i)+'</li>').join(''):'<div class="empty">ยังไม่มีข้อมูล</div>';
@@ -613,6 +670,42 @@ function gamePrompt(i){
     s+=x.timeline.map(t=>t.turn+' | '+(t.side==='opp'?'คู่แข่ง':USER)+(t.key?' [สำคัญ]':'')+' | '+t.text).join('\n');}
   return s;
 }
+const HEAD_DECK='คุณคือโค้ช Disney Lorcana ที่วิเคราะห์โครงสร้างเด็ค\n'+
+'งาน: วิเคราะห์เด็คด้านล่างในเชิงโครงสร้าง ไม่ต้องอิงผลการแข่ง\n'+
+'โฟกัสที่: เส้นโค้งค่าอิงค์ ความสมดุลของตัวละคร/ไอเทม/แอ็คชั่น ความสม่ำเสมอในการจั่ว '+
+'วิธีจัดการตัวคู่แข่ง การป้องกันตัวสำคัญ แผนปิดเกม และการ์ดที่ทำงานซ้ำซ้อนหรือไม่คุ้มช่อง\n\n'+RULES;
+
+function deckPrompt(){
+  const d=curDeck(), cards=d.cards||[];
+  let s=HEAD_DECK+'=== ข้อมูลเด็ค ===\n';
+  s+='ผู้เล่น: '+USER+'\nชื่อเด็ค: '+(d.name||'-')+'\nสีอิงค์: '+(d.inks||'-')+'\nเวอร์ชัน: '+(d.version||'-')+'\n';
+  s+='จำนวนการ์ดรวม: '+cards.reduce((a,c)=>a+c.qty,0)+' ใบ\n\n';
+  const byT={};
+  cards.forEach(function(c){
+    const f=findCard(c.name);
+    const t=c.type||(f?f[6].split('/')[0]:'อื่นๆ');
+    (byT[t]=byT[t]||[]).push({c:c,f:f});
+  });
+  Object.entries(byT).forEach(function(e){
+    s+='--- '+(T_TYPE[e[0]]||e[0])+' ('+e[1].reduce((a,x)=>a+x.c.qty,0)+' ใบ) ---\n';
+    s+=e[1].map(function(x){
+      let r=x.c.qty+' '+x.c.name;
+      if(x.f){r+='  ['+x.f[4]+' '+x.f[5]+' ink';
+        if(x.f[6].indexOf('Character')>=0)r+=' · '+x.f[8]+'/'+x.f[9]+'/'+x.f[10]+' lore';
+        r+=']';
+        if(x.f[12])r+='\n     '+x.f[12].replace(/\n/g,' ');}
+      else r+='  [ไม่พบในฐานข้อมูลการ์ด]';
+      return r;}).join('\n')+'\n\n';
+  });
+  const curve={};
+  cards.forEach(function(c){const f=findCard(c.name); if(f)curve[f[5]]=(curve[f[5]]||0)+c.qty;});
+  s+='--- เส้นโค้งค่าอิงค์ ---\n'+Object.keys(curve).sort((a,b)=>a-b)
+     .map(k=>k+' ink: '+curve[k]+' ใบ').join('\n')+'\n';
+  const g=allGames();
+  if(g.length){const w=g.filter(x=>x.result==='ชนะ').length;
+    s+='\n--- สถิติเด็คนี้ (อ้างอิงคร่าวๆ) ---\nเล่นมา '+g.length+' เกม ชนะ '+w+' แพ้ '+(g.length-w)+'\n';}
+  return s;
+}
 function overallPrompt(){
   const g=allGames();
   let s=HEAD_OVERALL+'=== ข้อมูลภาพรวมทุกแมตช์ ===\n';
@@ -718,11 +811,130 @@ function delGameAnal(i){
   document.getElementById('gmMsg').innerHTML='<div class="ok">ลบแล้ว</div>';
   renderAll(); renderSync();}
 
+/* ---------- บันทึกเด็ค ---------- */
+function parseDeckList(txt){
+  return txt.split('\n').map(l=>l.trim()).filter(Boolean).map(function(l){
+    const m=l.match(/^(\d+)\s*[xX]?\s+(.+)$/);
+    return m?{qty:+m[1],name:m[2].trim()}:{qty:1,name:l};});
+}
+function checkDeck(cards){
+  const total=cards.reduce((a,c)=>a+c.qty,0), warn=[], miss=[];
+  if(total<60)warn.push('มี '+total+' ใบ — กติกากำหนดอย่างน้อย 60 ใบ');
+  const over=cards.filter(c=>c.qty>4);
+  if(over.length)warn.push('เกิน 4 ใบต่อชื่อ: '+over.map(c=>c.name+' ('+c.qty+')').join(', '));
+  const names={}; cards.forEach(c=>{names[c.name]=(names[c.name]||0)+1;});
+  const dup=Object.keys(names).filter(k=>names[k]>1);
+  if(dup.length)warn.push('ชื่อซ้ำหลายบรรทัด: '+dup.join(', '));
+  const inks={};
+  cards.forEach(function(c){const f=findCard(c.name);
+    if(!f)miss.push(c.name); else inks[f[4]]=(inks[f[4]]||0)+c.qty;});
+  const inkNames=Object.keys(inks);
+  if(inkNames.length>2)warn.push('มี '+inkNames.length+' สี ('+inkNames.join(', ')+') — ปกติเด็คใช้ได้ 2 สี ยกเว้นมีความสามารถอนุญาต');
+  return {total:total,warn:warn,miss:miss,inks:inks};
+}
+function renderDeckPreview(){
+  const cards=parseDeckList(document.getElementById('d-cards').value);
+  if(!cards.length){document.getElementById('dkPreview').innerHTML='';return null;}
+  const r=checkDeck(cards);
+  const inkLine=Object.entries(r.inks).sort((a,b)=>b[1]-a[1])
+    .map(e=>'<span class="inktag" style="background:var(--'+e[0]+')">'+e[0]+' '+e[1]+'</span>').join(' ');
+  let html='<div class="box"><h3>ตรวจสอบ — รวม '+r.total+' ใบ</h3><div style="margin-bottom:8px">'+inkLine+'</div>';
+  if(r.miss.length)html+='<div class="warn">ไม่พบในฐานข้อมูลการ์ด '+r.miss.length+' รายการ: '+esc(r.miss.join(', '))+'</div>';
+  if(r.warn.length)html+=r.warn.map(w=>'<div class="warn" style="margin-top:6px">'+esc(w)+'</div>').join('');
+  if(!r.miss.length&&!r.warn.length)html+='<div class="ok">ผ่านการตรวจสอบเบื้องต้น</div>';
+  html+='</div>';
+  document.getElementById('dkPreview').innerHTML=html;
+  return {cards:cards,r:r};
+}
+document.getElementById('d-cards').addEventListener('input',function(){
+  if(document.getElementById('dkPreview').innerHTML)renderDeckPreview();});
+document.getElementById('dCheck').addEventListener('click',renderDeckPreview);
+document.getElementById('dLoadCur').addEventListener('click',function(){
+  const d=curDeck();
+  document.getElementById('d-name').value=d.name||'';
+  document.getElementById('d-inks').value=d.inks||'';
+  document.getElementById('d-ver').value='';
+  document.getElementById('d-cards').value=(d.cards||[]).map(c=>c.qty+' '+c.name).join('\n');
+  renderDeckPreview();
+  document.getElementById('dMsg').innerHTML='<div class="ok">โหลดเด็ค '+esc(d.version||'')+' มาแล้ว — ตั้งชื่อเวอร์ชันใหม่ก่อนบันทึก</div>';});
+document.getElementById('dSave').addEventListener('click',function(){
+  const ver=document.getElementById('d-ver').value.trim();
+  const cards=parseDeckList(document.getElementById('d-cards').value);
+  const msg=document.getElementById('dMsg');
+  if(!ver){msg.innerHTML='<div class="err">ตั้งชื่อเวอร์ชันก่อน</div>';return;}
+  if(!cards.length){msg.innerHTML='<div class="err">ยังไม่ได้วางเด็คลิสต์</div>';return;}
+  if(deckByVersion(ver)&&!confirm('มีเวอร์ชัน "'+ver+'" อยู่แล้ว ต้องการบันทึกทับไหม'))return;
+  const d=curDeck();
+  const obj={version:ver,
+    name:document.getElementById('d-name').value.trim()||d.name||'(ไม่ตั้งชื่อ)',
+    inks:document.getElementById('d-inks').value.trim()||d.inks||'—',
+    cards:cards, date:new Date().toISOString().slice(0,10)};
+  pendDecks[USER]=(pendDecks[USER]||[]).filter(x=>x.version!==ver);
+  pendDecks[USER].unshift(obj);
+  localStorage.setItem(LS_DECKS,JSON.stringify(pendDecks));
+  renderDeckPreview();
+  msg.innerHTML='<div class="ok">บันทึกเวอร์ชัน '+esc(ver)+' แล้ว ('+cards.reduce((a,c)=>a+c.qty,0)+' ใบ) — อย่าลืมซิงก์</div>';
+  renderAll(); renderSync();});
+
+function renderDeckHistory(){
+  const list=allDecks();
+  document.getElementById('deckHistory').innerHTML=list.length?
+    ('<table class="t"><tr><th>เวอร์ชัน</th><th>ชื่อเด็ค</th><th>สี</th><th>จำนวน</th><th>บันทึกเมื่อ</th><th></th></tr>'+
+    list.map(function(d,i){
+      const isPend=(pendDecks[USER]||[]).some(x=>x.version===d.version);
+      return '<tr><td>'+esc(d.version)+(i===0?' <span class="tagv">ปัจจุบัน</span>':'')+
+        (isPend?' <span class="pending">ยังไม่ซิงก์</span>':'')+'</td>'+
+        '<td>'+esc(d.name||'-')+'</td><td class="n">'+esc(d.inks||'-')+'</td>'+
+        '<td class="n">'+(d.cards||[]).reduce((a,c)=>a+c.qty,0)+'</td>'+
+        '<td class="n">'+esc(d.date||'-')+'</td>'+
+        '<td class="n"><button class="linkbtn" onclick="loadVer(\''+esc(d.version).replace(/'/g,"\\'")+'\')">แก้ไข</button></td></tr>';
+    }).join('')+'</table>')
+    :'<div class="empty">ยังไม่มีเวอร์ชันเด็ค</div>';
+}
+function loadVer(v){
+  const d=deckByVersion(v); if(!d)return;
+  document.getElementById('d-name').value=d.name||'';
+  document.getElementById('d-inks').value=d.inks||'';
+  document.getElementById('d-ver').value=d.version;
+  document.getElementById('d-cards').value=(d.cards||[]).map(c=>c.qty+' '+c.name).join('\n');
+  renderDeckPreview(); showPage('savedeck'); }
+
+/* ---------- วิเคราะห์เด็ค ---------- */
+function renderDeckAnal(){
+  const v=curDeck().version, a=deckAnalOf(v);
+  document.getElementById('deckAnalView').innerHTML=a?analHTML(a,'เวอร์ชัน '+v)
+    :'<div class="empty">ยังไม่มีบทวิเคราะห์เด็คเวอร์ชันนี้</div>';
+}
+document.getElementById('copyDeck').addEventListener('click',function(){
+  if(!(curDeck().cards||[]).length){alert('ยังไม่มีเด็ค — ไปที่แท็บบันทึกเด็คก่อน');return;}
+  copyText(deckPrompt(),this);});
+document.getElementById('toggleDeckPaste').addEventListener('click',function(){
+  const el=document.getElementById('deckPaste');
+  el.style.display=el.style.display==='none'?'block':'none';});
+document.getElementById('saveDeckAnal').addEventListener('click',function(){
+  const a=parseAnalysis(document.getElementById('dk-text').value);
+  if(!a){document.getElementById('dkMsg').innerHTML='<div class="err">ยังไม่ได้วางข้อความ</div>';return;}
+  analyses[dKey(curDeck().version)]=a; localStorage.setItem(LS_ANAL,JSON.stringify(analyses));
+  document.getElementById('dkMsg').innerHTML='<div class="ok">บันทึกแล้ว — อย่าลืมซิงก์</div>';
+  renderDeckAnal(); renderSync();});
+document.getElementById('delDeckAnal').addEventListener('click',function(){
+  delete analyses[dKey(curDeck().version)]; localStorage.setItem(LS_ANAL,JSON.stringify(analyses));
+  document.getElementById('dk-text').value='';
+  document.getElementById('dkMsg').innerHTML='<div class="ok">ลบแล้ว</div>';
+  renderDeckAnal(); renderSync();});
+
+function fillVerSelect(){
+  const list=allDecks(), sel=document.getElementById('f-ver');
+  const keep=sel.value;
+  sel.innerHTML=list.length?list.map(d=>'<option value="'+esc(d.version)+'">'+esc(d.version)+
+    ' ('+(d.cards||[]).reduce((a,c)=>a+c.qty,0)+' ใบ)</option>').join('')
+    :'<option value="">— ยังไม่มีเด็ค —</option>';
+  if(keep&&list.some(d=>d.version===keep))sel.value=keep;
+}
+
 function fillDatalists(g){
   const opps=[...new Set(g.map(x=>x.opponent).filter(Boolean))];
-  const vers=[...new Set(g.map((x,i)=>verOf(i)))];
   document.getElementById('oppList').innerHTML=opps.map(o=>'<option value="'+esc(o)+'">').join('');
-  document.getElementById('verList').innerHTML=vers.map(v=>'<option value="'+esc(v)+'">').join('');
 }
 
 /* ---------- คลังการ์ด ---------- */
@@ -815,10 +1027,6 @@ function buildGame(){
   if(mc>0||md||mn){obj.mull={count:mc,verdict:document.getElementById('f-mullverdict').value};
     if(md)obj.mull.discarded=md; if(mn)obj.mull.note=mn;}
   const ver=document.getElementById('f-ver').value.trim(); if(ver)obj.deckVersion=ver;
-  const rd=document.getElementById('f-deck').value.trim();
-  if(rd){const dk=rd.split('\n').map(l=>l.trim()).filter(Boolean).map(function(l){
-      const m=l.match(/^(\d+)\s*[xX]?\s+(.+)$/); return m?{qty:+m[1],name:m[2].trim()}:{qty:1,name:l};});
-    if(dk.length)obj.deck=dk;}
   if(tl.length)obj.timeline=tl;
   return obj;
 }
@@ -828,7 +1036,7 @@ document.getElementById('saveBtn').addEventListener('click',function(){
   pending[USER]=pending[USER]||[]; pending[USER].unshift(o);
   localStorage.setItem(LS_PENDING,JSON.stringify(pending));
   document.getElementById('saveMsg').innerHTML='<div class="ok">บันทึกเกมของ '+esc(USER)+' แล้ว — รอซิงก์ '+pending[USER].length+' เกม</div>';
-  ['f-opp','f-oppdetail','f-tl','f-deck','f-mulldisc','f-mullnote','f-endturn'].forEach(id=>document.getElementById(id).value='');
+  ['f-opp','f-oppdetail','f-tl','f-mulldisc','f-mullnote','f-endturn'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-my').value=0; document.getElementById('f-opp-lore').value=0;
   document.getElementById('f-mullcount').value=0;
   renderAll(); renderSync();});
@@ -853,26 +1061,49 @@ document.getElementById('clearCfg').addEventListener('click',function(){
   document.getElementById('s-token').value='';
   document.getElementById('pushMsg').innerHTML='<div class="ok">ลบ token ออกจากเครื่องแล้ว</div>';});
 function pendTotal(){return Object.values(pending).reduce((a,v)=>a+v.length,0);}
+function deckTotal(){return Object.values(pendDecks).reduce((a,v)=>a+v.length,0);}
+function dirty(){return pendTotal()+deckTotal()+Object.keys(analyses).length;}
 function renderSync(){
-  const pt=pendTotal(), at=Object.keys(analyses).length;
   const parts=[];
   Object.entries(pending).forEach(([u,v])=>{if(v.length)parts.push(u+': '+v.length+' เกม');});
+  Object.entries(pendDecks).forEach(([u,v])=>{if(v.length)parts.push(u+': เด็ค '+v.length+' เวอร์ชัน');});
+  const at=Object.keys(analyses).length;
   if(at)parts.push('บทวิเคราะห์ '+at+' รายการ');
-  document.getElementById('syncStatus').innerHTML=(pt||at)
+  const d=dirty();
+  document.getElementById('syncStatus').innerHTML=d
     ?'<div class="warn">รอซิงก์ — '+esc(parts.join(' · '))+'</div>'
     :'<div class="ok">ไม่มีข้อมูลค้างรอซิงก์</div>';
-  document.getElementById('pushBtn').disabled=!(pt||at);
-  document.getElementById('discardBtn').disabled=!(pt||at);
+  document.getElementById('pushBtn').disabled=!d;
+  document.getElementById('discardBtn').disabled=!d;
 }
 function mergedJSON(){
   const d=JSON.parse(JSON.stringify(DATA));
   Object.keys(d.users).forEach(function(u){
-    if(pending[u]&&pending[u].length)d.users[u].games=pending[u].concat(d.users[u].games);
+    const U2=d.users[u];
+    if(pending[u]&&pending[u].length)U2.games=pending[u].concat(U2.games);
+    U2.deckHistory=U2.deckHistory||[];
+    /* ย้ายเด็คปัจจุบันเดิมเข้าประวัติ ถ้ายังไม่มี */
+    if(U2.deck&&U2.deck.cards&&U2.deck.cards.length&&
+       !U2.deckHistory.some(x=>x.version===U2.deck.version)){
+      U2.deckHistory.push({version:U2.deck.version||'v1',name:U2.deck.name,
+        inks:U2.deck.inks,cards:U2.deck.cards,date:U2.deck.date||''});
+    }
+    (pendDecks[u]||[]).slice().reverse().forEach(function(nd){
+      U2.deckHistory=U2.deckHistory.filter(x=>x.version!==nd.version);
+      U2.deckHistory.unshift(nd);
+      U2.deck={version:nd.version,name:nd.name,inks:nd.inks,cards:nd.cards,date:nd.date};
+    });
   });
   Object.entries(analyses).forEach(function(e){
     const parts=e[0].split('|'), u=parts[0], a=e[1];
     if(!d.users[u])return;
     if(parts[1]==='__overall__'){d.users[u].overallAnalysis=a;return;}
+    if(parts[1]==='__deck__'){
+      const v=parts.slice(2).join('|');
+      const dk=(d.users[u].deckHistory||[]).find(x=>x.version===v);
+      if(dk)dk.analysis=a;
+      if(d.users[u].deck&&d.users[u].deck.version===v)d.users[u].deck.analysis=a;
+      return;}
     const g=d.users[u].games.find(x=>x.date===parts[1]&&x.opponent===parts.slice(2).join('|'));
     if(g)g.analysis=a;
   });
@@ -883,8 +1114,8 @@ document.getElementById('exportBtn').addEventListener('click',function(){
   document.getElementById('exportWrap').style.display='block';});
 document.getElementById('discardBtn').addEventListener('click',function(){
   if(!confirm('ทิ้งข้อมูลที่รอซิงก์ทั้งหมด (ทุกผู้เล่น)? กู้คืนไม่ได้'))return;
-  pending={}; analyses={};
-  localStorage.setItem(LS_PENDING,'{}'); localStorage.setItem(LS_ANAL,'{}');
+  pending={}; pendDecks={}; analyses={};
+  localStorage.setItem(LS_PENDING,'{}'); localStorage.setItem(LS_DECKS,'{}'); localStorage.setItem(LS_ANAL,'{}');
   renderAll(); renderSync();
   document.getElementById('pushMsg').innerHTML='<div class="ok">ล้างรายการรอซิงก์แล้ว</div>';});
 document.getElementById('pushBtn').addEventListener('click',async function(){
@@ -902,12 +1133,12 @@ document.getElementById('pushBtn').addEventListener('click',async function(){
     const put=await fetch(api,{method:'PUT',headers:Object.assign({},H,{'Content-Type':'application/json'}),
       body:JSON.stringify({message:'อัปเดตเกมและบทวิเคราะห์',content:btoa(bin),sha:sha})});
     if(!put.ok){const e=await put.json().catch(()=>({}));throw new Error(e.message||'HTTP '+put.status);}
-    DATA=JSON.parse(body); pending={}; analyses={};
-    localStorage.setItem(LS_PENDING,'{}'); localStorage.setItem(LS_ANAL,'{}');
+    DATA=JSON.parse(body); pending={}; pendDecks={}; analyses={};
+    localStorage.setItem(LS_PENDING,'{}'); localStorage.setItem(LS_DECKS,'{}'); localStorage.setItem(LS_ANAL,'{}');
     msg.innerHTML='<div class="ok">ซิงก์สำเร็จ — GitHub Pages จะอัปเดตใน 1–2 นาที</div>';
     renderAll(); renderSync();
   }catch(e){msg.innerHTML='<div class="err">ซิงก์ไม่สำเร็จ: '+esc(e.message)+'</div>';}
-  btn.textContent='ซิงก์ขึ้น GitHub'; btn.disabled=!(pendTotal()||Object.keys(analyses).length);});
+  btn.textContent='ซิงก์ขึ้น GitHub'; btn.disabled=!dirty();});
 </script>
 </body>
 </html>
